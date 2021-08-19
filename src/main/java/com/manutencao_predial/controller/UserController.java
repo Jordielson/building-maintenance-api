@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.manutencao_predial.model.Login;
 import com.manutencao_predial.model.User;
 import com.manutencao_predial.repository.UserRepository;
 
@@ -70,11 +71,11 @@ public class UserController {
 		return new ResponseEntity<User>(userRepository.save(user), HttpStatus.OK);
 	}
 	
-	@GetMapping("/user/login/{email}")
-	public ResponseEntity<User> login(@PathVariable(value="email") String email) {
-		User u = userRepository.findUserByEmail(email);
-		if(! (u != null)) {
-			return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+	@PostMapping("/user/login")
+	public ResponseEntity<User> login(@RequestBody Login data) {
+		User u = userRepository.login(data.getEmail(), data.getPassword());
+		if(u == null) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		} else {
 			u.add(linkTo(methodOn(UserController.class).getAll()).withRel("Users list"));
 			return new ResponseEntity<User>(u, HttpStatus.OK);
