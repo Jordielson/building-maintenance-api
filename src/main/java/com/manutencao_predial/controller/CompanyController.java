@@ -28,7 +28,7 @@ public class CompanyController {
 	CompanyRepository companyRepository;
 	
 	@GetMapping("/companies")
-	public ResponseEntity<List<Company>> getCompanies() {
+	public ResponseEntity<List<Company>> getAll() {
 		List<Company> companies = companyRepository.findAll();
 		for (Company c : companies) {
 			String id = c.getCnpj();
@@ -43,18 +43,18 @@ public class CompanyController {
 		if(!compO.isPresent()) {
 			return new ResponseEntity<Company>(HttpStatus.NOT_FOUND);
 		} else {
-			compO.get().add(linkTo(methodOn(UserController.class).getAll()).withRel("Companies list"));
+			compO.get().add(linkTo(methodOn(CompanyController.class).getAll()).withRel("Companies list"));
 			return new ResponseEntity<Company>(compO.get(), HttpStatus.OK);
 		}
 	}
 	
 	@PostMapping("/company")
-	public ResponseEntity<Company> saveUser(@RequestBody Company company) {
+	public ResponseEntity<Company> saveCompany(@RequestBody Company company) {
 		return new ResponseEntity<Company>(companyRepository.save(company), HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping("/company/{cpf}")
-	public ResponseEntity<?> deleteUser(@PathVariable(value="id") String cpf) {
+	public ResponseEntity<?> deleteCompany(@PathVariable(value="id") String cpf) {
 		Optional<Company> compO = companyRepository.findById(cpf);
 		if(!compO.isPresent()) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -65,7 +65,7 @@ public class CompanyController {
 	}
 	
 	@PutMapping("/company")
-	public ResponseEntity<Company> updateUser(@RequestBody Company company) {
+	public ResponseEntity<Company> updateCompany(@RequestBody Company company) {
 		return new ResponseEntity<Company>(companyRepository.save(company), HttpStatus.OK);
 	}
 	

@@ -70,8 +70,8 @@ public class UserController {
 		return new ResponseEntity<User>(userRepository.save(user), HttpStatus.OK);
 	}
 	
-	@GetMapping("/users/{email}")
-	public ResponseEntity<User> getUserByEmail(@PathVariable(value="email") String email) {
+	@GetMapping("/user/login/{email}")
+	public ResponseEntity<User> login(@PathVariable(value="email") String email) {
 		User u = userRepository.findUserByEmail(email);
 		if(! (u != null)) {
 			return new ResponseEntity<User>(HttpStatus.NOT_FOUND);

@@ -16,7 +16,7 @@ import javax.persistence.Table;
 import org.springframework.hateoas.RepresentationModel;
 
 @Entity
-@Table(name="room_matrial")
+@Table(name="room_material")
 public class RoomMaterial extends RepresentationModel<RoomMaterial> implements Serializable {
 	private static final long serialVersionUID = 1L;
 

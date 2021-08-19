@@ -44,18 +44,18 @@ public class ImmobileController {
 		if(!immO.isPresent()) {
 			return new ResponseEntity<Immobile>(HttpStatus.NOT_FOUND);
 		} else {
-			immO.get().add(linkTo(methodOn(UserController.class).getAll()).withRel("Immobile list"));
+			immO.get().add(linkTo(methodOn(ImmobileController.class).getAll()).withRel("Immobile list"));
 			return new ResponseEntity<Immobile>(immO.get(), HttpStatus.OK);
 		}
 	}
 	
 	@PostMapping("/immobile")
-	public ResponseEntity<Immobile> saveUser(@RequestBody Immobile immobile) {
+	public ResponseEntity<Immobile> saveImmobile(@RequestBody Immobile immobile) {
 		return new ResponseEntity<Immobile>(immobileRepository.save(immobile), HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping("/immobile/{id}")
-	public ResponseEntity<?> deleteUser(@PathVariable(value="id") int id) {
+	public ResponseEntity<?> deleteImmobile(@PathVariable(value="id") int id) {
 		Optional<Immobile> immO = immobileRepository.findById(id);
 		if(!immO.isPresent()) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -66,7 +66,7 @@ public class ImmobileController {
 	}
 	
 	@PutMapping("/immobile")
-	public ResponseEntity<Immobile> updateUser(@RequestBody Immobile immobile) {
+	public ResponseEntity<Immobile> updateImmobile(@RequestBody Immobile immobile) {
 		return new ResponseEntity<Immobile>(immobileRepository.save(immobile), HttpStatus.OK);
 	}
 }
