@@ -34,7 +34,6 @@ public class Immobile extends RepresentationModel<Immobile>implements Serializab
 	private Company company;
 	
 	public Immobile() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public int getId() {
