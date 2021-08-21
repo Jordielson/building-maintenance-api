@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.manutencao_predial.model.Login;
+import com.manutencao_predial.util.Login;
 import com.manutencao_predial.model.User;
 import com.manutencao_predial.repository.UserRepository;
 
@@ -72,12 +72,13 @@ public class UserController {
 	}
 	
 	@PostMapping("/user/login")
-	public ResponseEntity<User> login(@RequestBody Login data) {
-		User u = userRepository.login(data.getEmail(), data.getPassword());
+	public ResponseEntity<?> login(@RequestBody Login data) {
+		User u = userRepository.login(data.getEmail());
 		if(u == null) {
-			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+			return ResponseEntity.badRequest().body("Email nao esta cadastrado!");
+		} else if(! u.getPassword().equals(data.getPassword())) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Senha invalida!");
 		} else {
-			u.add(linkTo(methodOn(UserController.class).getAll()).withRel("Users list"));
 			return new ResponseEntity<User>(u, HttpStatus.OK);
 		}
 	}

@@ -1,4 +1,4 @@
-package com.manutencao_predial.model;
+package com.manutencao_predial.util;
 
 public class Login {
     private String email;

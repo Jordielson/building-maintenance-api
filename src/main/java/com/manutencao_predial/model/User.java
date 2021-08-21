@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.hateoas.RepresentationModel;
@@ -28,7 +29,14 @@ public class User extends RepresentationModel<User> implements Serializable{
 	@Column
 	private String password;
 	@Column
+	private String rg;
+	@Column
+	private String fone;
+	@Column
 	private String job;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "company")
+	private Company company;
 	
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
 	@JoinTable(name = "user_immobile",
@@ -85,6 +93,24 @@ public class User extends RepresentationModel<User> implements Serializable{
 
 	public void setWorkBuildings(List<Immobile> workBuildings) {
 		this.workBuildings = workBuildings;
+	}
+	public String getFone() {
+		return fone;
+	}
+	public void setFone(String fone) {
+		this.fone = fone;
+	}
+	public String getRg() {
+		return rg;
+	}
+	public void setRg(String rg) {
+		this.rg = rg;
+	}
+	public Company getCompany() {
+		return company;
+	}
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 
 	@Override
