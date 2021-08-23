@@ -23,6 +23,9 @@ public class OrderService extends RepresentationModel<OrderService> implements S
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
+    @Column
+	private String title;
+
     @ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "room_material")
     private RoomMaterial roomMaterial;
@@ -47,6 +50,12 @@ public class OrderService extends RepresentationModel<OrderService> implements S
     }
     public void setDescription(String description) {
         this.description = description;
+    }
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override

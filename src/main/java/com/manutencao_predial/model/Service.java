@@ -29,6 +29,9 @@ public class Service extends RepresentationModel<Service> implements Serializabl
 	private int id;
 	
 	@Column
+	private String title;
+
+	@Column
 	private float budget;
 	
 	@Column
@@ -105,6 +108,12 @@ public class Service extends RepresentationModel<Service> implements Serializabl
 	public void setProviders(List<User> providers) {
 		this.providers = providers;
 	}
+	public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 	
 	@Override
 	public String toString() {
