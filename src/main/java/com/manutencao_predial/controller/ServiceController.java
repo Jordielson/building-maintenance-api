@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.manutencao_predial.model.Service;
+import com.manutencao_predial.model.User;
 import com.manutencao_predial.repository.ServiceRepository;
 
 @RestController
@@ -68,5 +69,25 @@ public class ServiceController {
 	@PutMapping("/service")
 	public ResponseEntity<Service> updateService(@RequestBody Service service) {
 		return new ResponseEntity<Service>(serviceRepository.save(service), HttpStatus.OK);
+	}
+
+	@GetMapping("/service/notifications")
+	public ResponseEntity<List<Service>> getNotifications() {
+		List<Service> serviceList = serviceRepository.findNotifications();
+		for (Service service : serviceList) {
+			int id = service.getId();
+			service.add(linkTo(methodOn(ServiceController.class).getService(id)).withSelfRel());
+		}
+		return new ResponseEntity<List<Service>>(serviceList, HttpStatus.OK);
+	}
+
+	@PostMapping("/services")
+	public ResponseEntity<List<Service>> getAll(@RequestBody User user) {
+		List<Service> serviceList = serviceRepository.findServices(user.getCpf());
+		for (Service service : serviceList) {
+			int id = service.getId();
+			service.add(linkTo(methodOn(ServiceController.class).getService(id)).withSelfRel());
+		}
+		return new ResponseEntity<List<Service>>(serviceList, HttpStatus.OK);
 	}
 }

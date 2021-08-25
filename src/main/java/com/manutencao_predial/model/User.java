@@ -29,8 +29,6 @@ public class User extends RepresentationModel<User> implements Serializable{
 	@Column
 	private String password;
 	@Column
-	private String rg;
-	@Column
 	private String fone;
 	@Column
 	private String job;
@@ -99,12 +97,6 @@ public class User extends RepresentationModel<User> implements Serializable{
 	}
 	public void setFone(String fone) {
 		this.fone = fone;
-	}
-	public String getRg() {
-		return rg;
-	}
-	public void setRg(String rg) {
-		this.rg = rg;
 	}
 	public Company getCompany() {
 		return company;

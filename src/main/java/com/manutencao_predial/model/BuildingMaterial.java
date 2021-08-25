@@ -25,6 +25,9 @@ public class BuildingMaterial extends RepresentationModel<BuildingMaterial> impl
 	
 	@Column 
 	private float price;
+
+	@Column
+	private int amount = 0;
 	
 	public BuildingMaterial() {
 	}
@@ -51,6 +54,12 @@ public class BuildingMaterial extends RepresentationModel<BuildingMaterial> impl
 
 	public void setPrice(float price) {
 		this.price = price;
+	}
+	public int getAmount() {
+		return amount;
+	}
+	public void setAmount(int amount) {
+		this.amount = amount;
 	}
 	
 	

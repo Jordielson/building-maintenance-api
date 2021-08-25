@@ -1,7 +1,6 @@
 package com.manutencao_predial.model;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -38,10 +37,14 @@ public class Service extends RepresentationModel<Service> implements Serializabl
 	private String description;
 	
 	@Column
-	private LocalDate term;
+	private String term;
 	
 	@Column
 	private String state;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "room")
+	private Room room;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "manager")
@@ -77,11 +80,11 @@ public class Service extends RepresentationModel<Service> implements Serializabl
 		this.description = description;
 	}
 
-	public LocalDate getTerm() {
+	public String getTerm() {
 		return term;
 	}
 
-	public void setTerm(LocalDate term) {
+	public void setTerm(String term) {
 		this.term = term;
 	}
 
@@ -114,6 +117,12 @@ public class Service extends RepresentationModel<Service> implements Serializabl
     public void setTitle(String title) {
         this.title = title;
     }
+	public Room getRoom() {
+		return room;
+	}
+	public void setRoom(Room room) {
+		this.room = room;
+	}
 	
 	@Override
 	public String toString() {
