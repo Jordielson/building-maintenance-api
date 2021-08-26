@@ -1,4 +1,4 @@
-CREATE DataBase db_curso;
+CREATE DataBase manutencao_predial_db;
 USE manutencao_predial_db;
 
 
