@@ -82,4 +82,14 @@ public class UserController {
 			return new ResponseEntity<User>(u, HttpStatus.OK);
 		}
 	}
+
+	@GetMapping("/users/providers")
+	public ResponseEntity<List<User>> getProviders(){
+		List<User> users = userRepository.findProviders();
+		for (User u : users) {
+			String id = u.getCpf();
+			u.add(linkTo(methodOn(UserController.class).getUser(id)).withSelfRel());
+		}
+		return new ResponseEntity<List<User>>(users, HttpStatus.OK);
+	}
 }

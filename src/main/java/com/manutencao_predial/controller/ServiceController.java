@@ -31,7 +31,7 @@ public class ServiceController {
 	
 	@GetMapping("/service")
 	public ResponseEntity<List<Service>> getAll() {
-		List<Service> serviceList = serviceRepository.findAll();
+		List<Service> serviceList = serviceRepository.findAllOrderByState();
 		for (Service service : serviceList) {
 			int id = service.getId();
 			service.add(linkTo(methodOn(ServiceController.class).getService(id)).withSelfRel());

@@ -16,4 +16,8 @@ public interface ServiceRepository extends JpaRepository<Service, Integer>{
     @Query(value = "SELECT * FROM service s "+
         "WHERE s.manager = ?1", nativeQuery = true)
     public List<Service> findServices(String cpfGerente);
+
+    @Query(value = "SELECT * FROM service s "+
+        "ORDER BY s.state", nativeQuery = true)
+    public List<Service> findAllOrderByState();
 }
