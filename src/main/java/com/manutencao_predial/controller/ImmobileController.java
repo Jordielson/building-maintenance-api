@@ -22,7 +22,7 @@ import com.manutencao_predial.model.Immobile;
 import com.manutencao_predial.repository.ImmobileRepository;
 
 @RestController
-@RequestMapping(value="/building-maintenance")
+@RequestMapping(value="/ManuPredSoft")
 public class ImmobileController {
 	
 	@Autowired

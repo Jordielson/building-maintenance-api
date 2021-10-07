@@ -22,7 +22,7 @@ import com.manutencao_predial.model.Company;
 import com.manutencao_predial.repository.CompanyRepository;
 
 @RestController
-@RequestMapping(value="/building-maintenance")
+@RequestMapping(value="/ManuPredSoft")
 public class CompanyController {
 	@Autowired
 	CompanyRepository companyRepository;

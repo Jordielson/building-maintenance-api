@@ -22,7 +22,7 @@ import com.manutencao_predial.model.Supplier;
 import com.manutencao_predial.repository.SupplierRepository;
 
 @RestController
-@RequestMapping(value="/building-maintenance")
+@RequestMapping(value="/ManuPredSoft")
 public class SupplierController {
 
 	@Autowired

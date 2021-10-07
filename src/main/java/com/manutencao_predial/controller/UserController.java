@@ -23,7 +23,7 @@ import com.manutencao_predial.model.User;
 import com.manutencao_predial.repository.UserRepository;
 
 @RestController
-@RequestMapping(value = "/building-maintenance")
+@RequestMapping(value = "/ManuPredSoft")
 public class UserController {
 	@Autowired
 	UserRepository userRepository;

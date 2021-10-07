@@ -22,7 +22,7 @@ import com.manutencao_predial.model.BuildingMaterial;
 import com.manutencao_predial.repository.BuildingMaterialRepository;
 
 @RestController
-@RequestMapping(value="/building-maintenance")
+@RequestMapping(value="/ManuPredSoft")
 public class BuildingMaterialController {
 
 	@Autowired

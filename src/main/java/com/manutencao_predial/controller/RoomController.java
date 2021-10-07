@@ -23,7 +23,7 @@ import com.manutencao_predial.model.Room;
 import com.manutencao_predial.repository.RoomRepository;
 
 @RestController
-@RequestMapping(value="/building-maintenance")
+@RequestMapping(value="/ManuPredSoft")
 public class RoomController {
 	
 	@Autowired
