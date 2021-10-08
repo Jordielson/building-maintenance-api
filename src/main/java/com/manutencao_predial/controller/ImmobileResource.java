@@ -19,54 +19,54 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.manutencao_predial.model.Immobile;
-import com.manutencao_predial.repository.ImmobileRepository;
+import com.manutencao_predial.service.ImmobileService;
 
 @RestController
 @RequestMapping(value="/ManuPredSoft")
-public class ImmobileController {
+public class ImmobileResource {
 	
 	@Autowired
-	ImmobileRepository immobileRepository;
+	ImmobileService immobileService;
 	
 	@GetMapping("/immobile")
 	public ResponseEntity<List<Immobile>> getAll() {
-		List<Immobile> immobileList = immobileRepository.findAll();
+		List<Immobile> immobileList = immobileService.findAll();
 		for (Immobile i : immobileList) {
 			int id = i.getId();
-			i.add(linkTo(methodOn(ImmobileController.class).getImmobile(id)).withSelfRel());
+			i.add(linkTo(methodOn(ImmobileResource.class).getImmobile(id)).withSelfRel());
 		}
 		return new ResponseEntity<List<Immobile>>(immobileList, HttpStatus.OK);
 	}
 	
 	@GetMapping("/immobile/{id}")
 	public ResponseEntity<Immobile> getImmobile(@PathVariable(value="id") int id) {
-		Optional<Immobile> immO = immobileRepository.findById(id);
+		Optional<Immobile> immO = immobileService.findById(id);
 		if(!immO.isPresent()) {
 			return new ResponseEntity<Immobile>(HttpStatus.NOT_FOUND);
 		} else {
-			immO.get().add(linkTo(methodOn(ImmobileController.class).getAll()).withRel("Immobile list"));
+			immO.get().add(linkTo(methodOn(ImmobileResource.class).getAll()).withRel("Immobile list"));
 			return new ResponseEntity<Immobile>(immO.get(), HttpStatus.OK);
 		}
 	}
 	
 	@PostMapping("/immobile")
 	public ResponseEntity<Immobile> saveImmobile(@RequestBody Immobile immobile) {
-		return new ResponseEntity<Immobile>(immobileRepository.save(immobile), HttpStatus.CREATED);
+		return new ResponseEntity<Immobile>(immobileService.save(immobile), HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping("/immobile/{id}")
 	public ResponseEntity<?> deleteImmobile(@PathVariable(value="id") int id) {
-		Optional<Immobile> immO = immobileRepository.findById(id);
+		Optional<Immobile> immO = immobileService.findById(id);
 		if(!immO.isPresent()) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
-			immobileRepository.delete(immO.get());
+			immobileService.delete(immO.get());
 			return new ResponseEntity<>(HttpStatus.OK);		
 		}
 	}
 	
 	@PutMapping("/immobile")
 	public ResponseEntity<Immobile> updateImmobile(@RequestBody Immobile immobile) {
-		return new ResponseEntity<Immobile>(immobileRepository.save(immobile), HttpStatus.OK);
+		return new ResponseEntity<Immobile>(immobileService.save(immobile), HttpStatus.OK);
 	}
 }

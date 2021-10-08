@@ -19,54 +19,54 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.manutencao_predial.model.Supplier;
-import com.manutencao_predial.repository.SupplierRepository;
+import com.manutencao_predial.service.SupplierService;
 
 @RestController
 @RequestMapping(value="/ManuPredSoft")
-public class SupplierController {
+public class SupplierResource {
 
 	@Autowired
-	SupplierRepository supplierRepository;
+	SupplierService supplierService;
 	
 	@GetMapping("/supplier")
 	public ResponseEntity<List<Supplier>> getAll() {
-		List<Supplier> supplier = supplierRepository.findAll();
+		List<Supplier> supplier = supplierService.findAll();
 		for (Supplier s : supplier) {
 			String id = s.getCnpj();
-			s.add(linkTo(methodOn(SupplierController.class).getSupplier(id)).withSelfRel());
+			s.add(linkTo(methodOn(SupplierResource.class).getSupplier(id)).withSelfRel());
 		}
 		return new ResponseEntity<List<Supplier>>(supplier, HttpStatus.OK);
 	}
 	
 	@GetMapping("/supplier/{id}")
 	public ResponseEntity<Supplier> getSupplier(@PathVariable(value="id") String id) {
-		Optional<Supplier> supplierO = supplierRepository.findById(id);
+		Optional<Supplier> supplierO = supplierService.findById(id);
 		if(!supplierO.isPresent()) {
 			return new ResponseEntity<Supplier>(HttpStatus.NOT_FOUND);
 		} else {
-			supplierO.get().add(linkTo(methodOn(SupplierController.class).getAll()).withRel("Supplier list"));
+			supplierO.get().add(linkTo(methodOn(SupplierResource.class).getAll()).withRel("Supplier list"));
 			return new ResponseEntity<Supplier>(supplierO.get(), HttpStatus.OK);
 		}
 	}
 	
 	@PostMapping("/supplier")
 	public ResponseEntity<Supplier> saveSupplier(@RequestBody Supplier supplier) {
-		return new ResponseEntity<Supplier>(supplierRepository.save(supplier), HttpStatus.CREATED);
+		return new ResponseEntity<Supplier>(supplierService.save(supplier), HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping("/supplier/{id}")
 	public ResponseEntity<?> deleteSupplier(@PathVariable(value="id") String id) {
-		Optional<Supplier> supplierO = supplierRepository.findById(id);
+		Optional<Supplier> supplierO = supplierService.findById(id);
 		if(!supplierO.isPresent()) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
-			supplierRepository.delete(supplierO.get());
+			supplierService.delete(supplierO.get());
 			return new ResponseEntity<>(HttpStatus.OK);		
 		}
 	}
 	
 	@PutMapping("/supplier")
 	public ResponseEntity<Supplier> updateSupplier(@RequestBody Supplier supplier) {
-		return new ResponseEntity<Supplier>(supplierRepository.save(supplier), HttpStatus.OK);
+		return new ResponseEntity<Supplier>(supplierService.save(supplier), HttpStatus.OK);
 	}
 }

@@ -20,56 +20,56 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.manutencao_predial.model.Immobile;
 import com.manutencao_predial.model.Room;
-import com.manutencao_predial.repository.RoomRepository;
+import com.manutencao_predial.service.RoomService;
 
 @RestController
 @RequestMapping(value="/ManuPredSoft")
-public class RoomController {
+public class RoomResource {
 	
 	@Autowired
-	RoomRepository roomRepository;
+	RoomService roomService;
 	
 	@GetMapping("/room")
 	public ResponseEntity<List<Room>> getAll() {
-		List<Room> roomList = roomRepository.findAll();
+		List<Room> roomList = roomService.findAll();
 		for (Room room : roomList) {
 			int id = room.getId();
 			Immobile immobile = room.getImmobile();
-			immobile.add(linkTo(methodOn(ImmobileController.class).getImmobile(immobile.getId())).withSelfRel());
-			room.add(linkTo(methodOn(RoomController.class).getRoom(id)).withSelfRel());
+			immobile.add(linkTo(methodOn(ImmobileResource.class).getImmobile(immobile.getId())).withSelfRel());
+			room.add(linkTo(methodOn(RoomResource.class).getRoom(id)).withSelfRel());
 		}
 		return new ResponseEntity<List<Room>>(roomList, HttpStatus.OK);
 	}
 	
 	@GetMapping("/room/{id}")
 	public ResponseEntity<Room> getRoom(@PathVariable(value="id") int id) {
-		Optional<Room> roomO = roomRepository.findById(id);
+		Optional<Room> roomO = roomService.findById(id);
 		if(!roomO.isPresent()) {
 			return new ResponseEntity<Room>(HttpStatus.NOT_FOUND);
 		} else {
-			roomO.get().add(linkTo(methodOn(RoomController.class).getAll()).withRel("Room list"));
+			roomO.get().add(linkTo(methodOn(RoomResource.class).getAll()).withRel("Room list"));
 			return new ResponseEntity<Room>(roomO.get(), HttpStatus.OK);
 		}
 	}
 	
 	@PostMapping("/room")
 	public ResponseEntity<Room> saveRoom(@RequestBody Room room) {
-		return new ResponseEntity<Room>(roomRepository.save(room), HttpStatus.CREATED);
+		return new ResponseEntity<Room>(roomService.save(room), HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping("/room/{id}")
 	public ResponseEntity<?> deleteRoom(@PathVariable(value="id") int id) {
-		Optional<Room> roomO = roomRepository.findById(id);
+		Optional<Room> roomO = roomService.findById(id);
 		if(!roomO.isPresent()) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
-			roomRepository.delete(roomO.get());
+			roomService.delete(roomO.get());
 			return new ResponseEntity<>(HttpStatus.OK);		
 		}
 	}
 	
 	@PutMapping("/room")
 	public ResponseEntity<Room> updateRoom(@RequestBody Room room) {
-		return new ResponseEntity<Room>(roomRepository.save(room), HttpStatus.OK);
+		return new ResponseEntity<Room>(roomService.save(room), HttpStatus.OK);
 	}
 }
