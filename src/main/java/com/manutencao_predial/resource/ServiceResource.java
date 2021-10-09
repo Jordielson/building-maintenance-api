@@ -1,4 +1,4 @@
-package com.manutencao_predial.controller;
+package com.manutencao_predial.resource;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
