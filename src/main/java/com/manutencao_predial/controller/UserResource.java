@@ -20,31 +20,31 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.manutencao_predial.util.Login;
 import com.manutencao_predial.model.User;
-import com.manutencao_predial.repository.UserRepository;
+import com.manutencao_predial.service.UserService;
 
 @RestController
-@RequestMapping(value = "/building-maintenance")
-public class UserController {
+@RequestMapping(value = "/ManuPredSoft")
+public class UserResource {
 	@Autowired
-	UserRepository userRepository;
+	UserService userService;
 	
 	@GetMapping("/users")
 	public ResponseEntity<List<User>> getAll(){
-		List<User> users = userRepository.findAll();
+		List<User> users = userService.findAll();
 		for (User u : users) {
 			String id = u.getCpf();
-			u.add(linkTo(methodOn(UserController.class).getUser(id)).withSelfRel());
+			u.add(linkTo(methodOn(UserResource.class).getUser(id)).withSelfRel());
 		}
 		return new ResponseEntity<List<User>>(users, HttpStatus.OK);
 	}
 	
 	@GetMapping("/user/{id}")
 	public ResponseEntity<User> getUser(@PathVariable(value="id") String id) {
-		Optional<User> userO = userRepository.findById(id);
+		Optional<User> userO = userService.findById(id);
 		if(!userO.isPresent()) {
 			return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 		} else {
-			userO.get().add(linkTo(methodOn(UserController.class).getAll()).withRel("Users list"));
+			userO.get().add(linkTo(methodOn(UserResource.class).getAll()).withRel("Users list"));
 			return new ResponseEntity<User>(userO.get(), HttpStatus.OK);
 		}
 	}
@@ -52,32 +52,30 @@ public class UserController {
 
 	@PostMapping("/user")
 	public ResponseEntity<User> saveUser(@RequestBody User user) {
-		return new ResponseEntity<User>(userRepository.save(user), HttpStatus.CREATED);
+		return new ResponseEntity<User>(userService.save(user), HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping("/user/{id}")
 	public ResponseEntity<?> deleteUser(@PathVariable(value="id") String cpf) {
-		Optional<User> userO = userRepository.findById(cpf);
+		Optional<User> userO = userService.findById(cpf);
 		if(!userO.isPresent()) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
-			userRepository.delete(userO.get());
+			userService.delete(userO.get());
 			return new ResponseEntity<>(HttpStatus.OK);		
 		}
 	}
 	
 	@PutMapping("/user")
 	public ResponseEntity<User> updateUser(@RequestBody User user) {
-		return new ResponseEntity<User>(userRepository.save(user), HttpStatus.OK);
+		return new ResponseEntity<User>(userService.save(user), HttpStatus.OK);
 	}
 	
 	@PostMapping("/user/login")
 	public ResponseEntity<?> login(@RequestBody Login data) {
-		User u = userRepository.login(data.getEmail());
+		User u = userService.login(data.getEmail(), data.getPassword());
 		if(u == null) {
-			return ResponseEntity.badRequest().body("Email nao esta cadastrado!");
-		} else if(! u.getPassword().equals(data.getPassword())) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Senha invalida!");
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email nao cadastrado ou Senha invalida!");
 		} else {
 			return new ResponseEntity<User>(u, HttpStatus.OK);
 		}
@@ -85,10 +83,10 @@ public class UserController {
 
 	@GetMapping("/users/providers")
 	public ResponseEntity<List<User>> getProviders(){
-		List<User> users = userRepository.findProviders();
+		List<User> users = userService.findProviders();
 		for (User u : users) {
 			String id = u.getCpf();
-			u.add(linkTo(methodOn(UserController.class).getUser(id)).withSelfRel());
+			u.add(linkTo(methodOn(UserResource.class).getUser(id)).withSelfRel());
 		}
 		return new ResponseEntity<List<User>>(users, HttpStatus.OK);
 	}

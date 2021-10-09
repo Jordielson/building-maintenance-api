@@ -20,73 +20,73 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.manutencao_predial.model.Service;
 import com.manutencao_predial.model.User;
-import com.manutencao_predial.repository.ServiceRepository;
+import com.manutencao_predial.service.ServiceService;
 
 @RestController
-@RequestMapping(value="/building-maintenance")
-public class ServiceController {
+@RequestMapping(value="/ManuPredSoft")
+public class ServiceResource {
 
 	@Autowired
-	ServiceRepository serviceRepository;
+	ServiceService serviceService;
 	
 	@GetMapping("/service")
 	public ResponseEntity<List<Service>> getAll() {
-		List<Service> serviceList = serviceRepository.findAllOrderByState();
+		List<Service> serviceList = serviceService.findAllOrderByState();
 		for (Service service : serviceList) {
 			int id = service.getId();
-			service.add(linkTo(methodOn(ServiceController.class).getService(id)).withSelfRel());
+			service.add(linkTo(methodOn(ServiceResource.class).getService(id)).withSelfRel());
 		}
 		return new ResponseEntity<List<Service>>(serviceList, HttpStatus.OK);
 	}
 	
 	@GetMapping("/service/{id}")
 	public ResponseEntity<Service> getService(@PathVariable(value="id") int id) {
-		Optional<Service> serviceO = serviceRepository.findById(id);
+		Optional<Service> serviceO = serviceService.findById(id);
 		if(!serviceO.isPresent()) {
 			return new ResponseEntity<Service>(HttpStatus.NOT_FOUND);
 		} else {
-			serviceO.get().add(linkTo(methodOn(ServiceController.class).getAll()).withRel("Service list"));
+			serviceO.get().add(linkTo(methodOn(ServiceResource.class).getAll()).withRel("Service list"));
 			return new ResponseEntity<Service>(serviceO.get(), HttpStatus.OK);
 		}
 	}
 	
 	@PostMapping("/service")
 	public ResponseEntity<Service> saveService(@RequestBody Service service) {
-		return new ResponseEntity<Service>(serviceRepository.save(service), HttpStatus.CREATED);
+		return new ResponseEntity<Service>(serviceService.save(service), HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping("/service/{id}")
 	public ResponseEntity<?> deleteService(@PathVariable(value="id") int id) {
-		Optional<Service> serviceO = serviceRepository.findById(id);
+		Optional<Service> serviceO = serviceService.findById(id);
 		if(!serviceO.isPresent()) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
-			serviceRepository.delete(serviceO.get());
+			serviceService.delete(serviceO.get());
 			return new ResponseEntity<>(HttpStatus.OK);		
 		}
 	}
 	
 	@PutMapping("/service")
 	public ResponseEntity<Service> updateService(@RequestBody Service service) {
-		return new ResponseEntity<Service>(serviceRepository.save(service), HttpStatus.OK);
+		return new ResponseEntity<Service>(serviceService.save(service), HttpStatus.OK);
 	}
 
 	@GetMapping("/service/notifications")
 	public ResponseEntity<List<Service>> getNotifications() {
-		List<Service> serviceList = serviceRepository.findNotifications();
+		List<Service> serviceList = serviceService.findNotifications();
 		for (Service service : serviceList) {
 			int id = service.getId();
-			service.add(linkTo(methodOn(ServiceController.class).getService(id)).withSelfRel());
+			service.add(linkTo(methodOn(ServiceResource.class).getService(id)).withSelfRel());
 		}
 		return new ResponseEntity<List<Service>>(serviceList, HttpStatus.OK);
 	}
 
 	@PostMapping("/services")
 	public ResponseEntity<List<Service>> getAll(@RequestBody User user) {
-		List<Service> serviceList = serviceRepository.findServices(user.getCpf());
+		List<Service> serviceList = serviceService.findServices(user.getCpf());
 		for (Service service : serviceList) {
 			int id = service.getId();
-			service.add(linkTo(methodOn(ServiceController.class).getService(id)).withSelfRel());
+			service.add(linkTo(methodOn(ServiceResource.class).getService(id)).withSelfRel());
 		}
 		return new ResponseEntity<List<Service>>(serviceList, HttpStatus.OK);
 	}

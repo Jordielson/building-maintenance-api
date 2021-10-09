@@ -19,54 +19,55 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.manutencao_predial.model.BuildingMaterial;
-import com.manutencao_predial.repository.BuildingMaterialRepository;
+import com.manutencao_predial.service.BuildingMaterialService;
 
 @RestController
-@RequestMapping(value="/building-maintenance")
-public class BuildingMaterialController {
+@RequestMapping(value="/ManuPredSoft")
+public class BuildingMaterialResource {
 
 	@Autowired
-	BuildingMaterialRepository buildingMaterialRepository;
+	BuildingMaterialService BuildingMaterialService;
+
 	
 	@GetMapping("/building-material")
 	public ResponseEntity<List<BuildingMaterial>> getAll() {
-		List<BuildingMaterial> materialList = buildingMaterialRepository.findAll();
+		List<BuildingMaterial> materialList = BuildingMaterialService.findAll();
 		for (BuildingMaterial m : materialList) {
 			int id = m.getId();
-			m.add(linkTo(methodOn(BuildingMaterialController.class).getMaterial(id)).withSelfRel());
+			m.add(linkTo(methodOn(BuildingMaterialResource.class).getMaterial(id)).withSelfRel());
 		}
 		return new ResponseEntity<List<BuildingMaterial>>(materialList, HttpStatus.OK);
 	}
 	
 	@GetMapping("/building-material/{id}")
 	public ResponseEntity<BuildingMaterial> getMaterial(@PathVariable(value="id") int id) {
-		Optional<BuildingMaterial> matO = buildingMaterialRepository.findById(id);
+		Optional<BuildingMaterial> matO = BuildingMaterialService.findById(id);
 		if(!matO.isPresent()) {
 			return new ResponseEntity<BuildingMaterial>(HttpStatus.NOT_FOUND);
 		} else {
-			matO.get().add(linkTo(methodOn(BuildingMaterialController.class).getAll()).withRel("Building material list"));
+			matO.get().add(linkTo(methodOn(BuildingMaterialResource.class).getAll()).withRel("Building material list"));
 			return new ResponseEntity<BuildingMaterial>(matO.get(), HttpStatus.OK);
 		}
 	}
 	
 	@PostMapping("/building-material")
 	public ResponseEntity<BuildingMaterial> saveMaterial(@RequestBody BuildingMaterial material) {
-		return new ResponseEntity<BuildingMaterial>(buildingMaterialRepository.save(material), HttpStatus.CREATED);
+		return new ResponseEntity<BuildingMaterial>(BuildingMaterialService.save(material), HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping("/building-material/{id}")
 	public ResponseEntity<?> deleteMaterial(@PathVariable(value="id") int id) {
-		Optional<BuildingMaterial> matO = buildingMaterialRepository.findById(id);
+		Optional<BuildingMaterial> matO = BuildingMaterialService.findById(id);
 		if(!matO.isPresent()) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
-			buildingMaterialRepository.delete(matO.get());
+			BuildingMaterialService.delete(matO.get());
 			return new ResponseEntity<>(HttpStatus.OK);		
 		}
 	}
 	
 	@PutMapping("/building-material")
 	public ResponseEntity<BuildingMaterial> updateMaterial(@RequestBody BuildingMaterial material) {
-		return new ResponseEntity<BuildingMaterial>(buildingMaterialRepository.save(material), HttpStatus.OK);
+		return new ResponseEntity<BuildingMaterial>(BuildingMaterialService.save(material), HttpStatus.OK);
 	}
 }

@@ -19,54 +19,54 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.manutencao_predial.model.Company;
-import com.manutencao_predial.repository.CompanyRepository;
+import com.manutencao_predial.service.CompanyService;
 
 @RestController
-@RequestMapping(value="/building-maintenance")
-public class CompanyController {
+@RequestMapping(value="/ManuPredSoft")
+public class CompanyResource {
 	@Autowired
-	CompanyRepository companyRepository;
+	CompanyService companyService;
 	
 	@GetMapping("/companies")
 	public ResponseEntity<List<Company>> getAll() {
-		List<Company> companies = companyRepository.findAll();
+		List<Company> companies = companyService.findAll();
 		for (Company c : companies) {
 			String id = c.getCnpj();
-			c.add(linkTo(methodOn(CompanyController.class).getCompany(id)).withSelfRel());
+			c.add(linkTo(methodOn(CompanyResource.class).getCompany(id)).withSelfRel());
 		}
 		return new ResponseEntity<List<Company>>(companies, HttpStatus.OK);
 	}
 	
 	@GetMapping("/company/{id}")
 	public ResponseEntity<Company> getCompany(@PathVariable(value="id") String cnpj) {
-		Optional<Company> compO = companyRepository.findById(cnpj);
+		Optional<Company> compO = companyService.findById(cnpj);
 		if(!compO.isPresent()) {
 			return new ResponseEntity<Company>(HttpStatus.NOT_FOUND);
 		} else {
-			compO.get().add(linkTo(methodOn(CompanyController.class).getAll()).withRel("Companies list"));
+			compO.get().add(linkTo(methodOn(CompanyResource.class).getAll()).withRel("Companies list"));
 			return new ResponseEntity<Company>(compO.get(), HttpStatus.OK);
 		}
 	}
 	
 	@PostMapping("/company")
 	public ResponseEntity<Company> saveCompany(@RequestBody Company company) {
-		return new ResponseEntity<Company>(companyRepository.save(company), HttpStatus.CREATED);
+		return new ResponseEntity<Company>(companyService.save(company), HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping("/company/{cpf}")
 	public ResponseEntity<?> deleteCompany(@PathVariable(value="id") String cpf) {
-		Optional<Company> compO = companyRepository.findById(cpf);
+		Optional<Company> compO = companyService.findById(cpf);
 		if(!compO.isPresent()) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
-			companyRepository.delete(compO.get());
+			companyService.delete(compO.get());
 			return new ResponseEntity<>(HttpStatus.OK);		
 		}
 	}
 	
 	@PutMapping("/company")
 	public ResponseEntity<Company> updateCompany(@RequestBody Company company) {
-		return new ResponseEntity<Company>(companyRepository.save(company), HttpStatus.OK);
+		return new ResponseEntity<Company>(companyService.save(company), HttpStatus.OK);
 	}
 	
 }
