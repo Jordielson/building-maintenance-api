@@ -1,11 +1,16 @@
 package com.manutencao_predial.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -31,16 +36,20 @@ public class Service extends RepresentationModel<Service> implements Serializabl
 	private String title;
 
 	@Column
-	private float budget;
+	private BigDecimal budget;
 	
 	@Column
 	private String description;
+
+	@Column
+	private LocalDate initDate = LocalDate.now();
 	
 	@Column
 	private String term;
 	
-	@Column
-	private String state;
+	@Enumerated(EnumType.STRING)
+	@Column(length = 50, nullable = false)
+	private StateService state;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "room")
@@ -49,12 +58,29 @@ public class Service extends RepresentationModel<Service> implements Serializabl
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "manager")
 	private User manager;
+
+	@ManyToMany
+	@JoinTable(name = "material_service",
+		joinColumns = @JoinColumn(
+			name = "service",
+			referencedColumnName = "id"
+		),
+		inverseJoinColumns = @JoinColumn(
+			name = "material",
+			referencedColumnName = "id"
+		)
+	)
+	private List<MaterialService> materials;
 	
-	@ManyToMany(cascade = CascadeType.REFRESH)
+	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
 	@JoinTable(name = "providers_service",
 				joinColumns = @JoinColumn(name = "service"),
 				inverseJoinColumns = @JoinColumn(name = "providers"))
-	private List<User> providers;
+	private List<User> providers =  new ArrayList<User>();
+
+	public void addProvider(User user) {
+		providers.add(user);
+	}
 
 	public int getId() {
 		return id;
@@ -64,11 +90,11 @@ public class Service extends RepresentationModel<Service> implements Serializabl
 		this.id = id;
 	}
 
-	public float getBudget() {
+	public BigDecimal getBudget() {
 		return budget;
 	}
 
-	public void setBudget(float budget) {
+	public void setBudget(BigDecimal budget) {
 		this.budget = budget;
 	}
 
@@ -88,11 +114,11 @@ public class Service extends RepresentationModel<Service> implements Serializabl
 		this.term = term;
 	}
 
-	public String getState() {
+	public StateService getState() {
 		return state;
 	}
 
-	public void setState(String state) {
+	public void setState(StateService state) {
 		this.state = state;
 	}
 
@@ -123,6 +149,28 @@ public class Service extends RepresentationModel<Service> implements Serializabl
 	public void setRoom(Room room) {
 		this.room = room;
 	}
+	public List<MaterialService> getMaterials() {
+		return materials;
+	}
+	public void setMaterials(List<MaterialService> materials) {
+		this.materials = materials;
+	}
+	public void addMaterial(MaterialService materialService) {
+		this.materials.add(materialService);
+		this.budget.add(materialService.getFullValue());
+	}
+	public void updateBudget() {
+		this.budget = new BigDecimal(0);
+		for (MaterialService materialService : materials) {
+			this.budget.add(materialService.getFullValue());
+		}
+	}
+	public LocalDate getInitDate() {
+		return initDate;
+	}
+	public void setInitDate(LocalDate initDate) {
+		this.initDate = initDate;
+	}
 	
 	@Override
 	public String toString() {
@@ -133,7 +181,7 @@ public class Service extends RepresentationModel<Service> implements Serializabl
 	public int hashCode() {
 		final int prime = 7;
 		int result = id;
-		result = prime * result + (int) budget;
+		result = prime * result + ((budget==null) ? 0 : budget.intValue());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((term == null) ? 0 : term.hashCode());
 		result = prime * result + ((state == null) ? 0 : state.hashCode());

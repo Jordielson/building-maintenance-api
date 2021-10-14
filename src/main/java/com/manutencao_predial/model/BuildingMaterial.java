@@ -1,6 +1,7 @@
 package com.manutencao_predial.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,12 +25,17 @@ public class BuildingMaterial extends RepresentationModel<BuildingMaterial> impl
 	private String name;
 	
 	@Column 
-	private float price;
+	private BigDecimal price;
 
 	@Column
 	private int amount = 0;
 	
 	public BuildingMaterial() {
+	}
+	public BuildingMaterial(String name, BigDecimal price, int amount) {
+		this.name = name;
+		this.price = price;
+		this.amount = amount;
 	}
 
 	public int getId() {
@@ -48,11 +54,11 @@ public class BuildingMaterial extends RepresentationModel<BuildingMaterial> impl
 		this.name = name;
 	}
 
-	public float getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
 
-	public void setPrice(float price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 	public int getAmount() {
@@ -73,7 +79,7 @@ public class BuildingMaterial extends RepresentationModel<BuildingMaterial> impl
 		final int prime = 7;
 		int result = id;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + (int) price;
+		result = prime * result + price.hashCode();
 		return result;
 	}
 	
