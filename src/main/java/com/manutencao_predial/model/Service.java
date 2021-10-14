@@ -1,6 +1,7 @@
 package com.manutencao_predial.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -50,11 +51,16 @@ public class Service extends RepresentationModel<Service> implements Serializabl
 	@JoinColumn(name = "manager")
 	private User manager;
 	
-	@ManyToMany(cascade = CascadeType.REFRESH)
+	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
 	@JoinTable(name = "providers_service",
 				joinColumns = @JoinColumn(name = "service"),
 				inverseJoinColumns = @JoinColumn(name = "providers"))
-	private List<User> providers;
+	private List<User> providers = new ArrayList<>();
+
+
+	public void addProvider(User user) {
+		providers.add(user);
+	}
 
 	public int getId() {
 		return id;

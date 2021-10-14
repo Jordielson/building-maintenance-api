@@ -6,7 +6,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -32,7 +31,7 @@ public class User extends RepresentationModel<User> implements Serializable{
 	@Column
 	private String job;
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+	@ManyToMany(cascade = CascadeType.REFRESH)
 	@JoinTable(name = "user_immobile",
 				joinColumns = @JoinColumn(name = "user_cpf"),
 				inverseJoinColumns = @JoinColumn(name = "immobile_id"))
