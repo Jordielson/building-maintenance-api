@@ -38,10 +38,15 @@ public class ServiceService {
         if(!serviceO.isPresent()) {
             throw new ServiceNotFoundException("Servico não encontrado!");
         } 
-        User user = userRepository.login(email);
-        if(user == null) {
+        List<User> users = userRepository.findByEmail(email);
+        if(users.size() == 0) {
             throw new UserNotFoundException("Usuario nao encontrado!");
         }
+        User user = users.get(0);
+        if(!user.getJob().equals("Prestador")) {
+            throw new RuntimeException("Usuario nao eh prestador!");
+        }
+
         Service service = serviceO.get();
         service.addProvider(user);
         if(service.getProviders().size() == 1) {

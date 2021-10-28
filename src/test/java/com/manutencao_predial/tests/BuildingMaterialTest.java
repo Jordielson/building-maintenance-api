@@ -1,6 +1,7 @@
 package com.manutencao_predial.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.math.BigDecimal;
@@ -55,37 +56,20 @@ public class BuildingMaterialTest {
     @Test
     public void addItem() {
         BuildingMaterial buildingMaterial = new BuildingMaterial("Ceramica", new BigDecimal(25), 51);
-        try {
-            buildingMaterialService.checkBuildingMaterialIsValid(buildingMaterial);
-            fail("Nao deu a excecao esperada");
-        }catch(Exception e){
-            assertEquals("Quantidade de excedeu o limite", e.getMessage());
-        }
+        assertFalse(buildingMaterialService.checkBuildingMaterialIsValid(buildingMaterial));
+
         buildingMaterial.setAmount(50);
-        try {
-            assertEquals(true, buildingMaterialService.checkBuildingMaterialIsValid(buildingMaterial));
-        }catch(Exception e){
-            fail("Nao deu a excecao esperada");
-        }
+        assertEquals(true, buildingMaterialService.checkBuildingMaterialIsValid(buildingMaterial));
+
         buildingMaterial.setAmount(49);
-        try {
-            assertEquals(true, buildingMaterialService.checkBuildingMaterialIsValid(buildingMaterial));
-        }catch(Exception e){
-            fail("Nao deu a excecao esperada");
-        }
+        assertEquals(true, buildingMaterialService.checkBuildingMaterialIsValid(buildingMaterial));
 
         buildingMaterial.setAmount(1);
-        try {
-            assertEquals(true, buildingMaterialService.checkBuildingMaterialIsValid(buildingMaterial));
-        }catch(Exception e){
-            fail("Nao deu a excecao esperada");
-        }
+        assertEquals(true, buildingMaterialService.checkBuildingMaterialIsValid(buildingMaterial));
+
         buildingMaterial.setAmount(0);
-        try {
-            assertEquals(true, buildingMaterialService.checkBuildingMaterialIsValid(buildingMaterial));
-        }catch(Exception e){
-            fail("Nao deu a excecao esperada");
-        }
+        assertEquals(true, buildingMaterialService.checkBuildingMaterialIsValid(buildingMaterial));
+
         buildingMaterial.setAmount(-1);
         try {
             buildingMaterialService.checkBuildingMaterialIsValid(buildingMaterial);
