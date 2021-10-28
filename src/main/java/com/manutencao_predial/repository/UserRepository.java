@@ -13,4 +13,6 @@ public interface UserRepository extends JpaRepository<User, String>{
 
     @Query(value = "SELECT * FROM user r WHERE r.job = 'Prestador'", nativeQuery = true)
     public List<User> findProviders();
+    
+    public List<User> findByEmail(String email);
 }

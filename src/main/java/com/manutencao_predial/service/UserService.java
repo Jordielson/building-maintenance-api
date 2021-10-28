@@ -17,6 +17,10 @@ public class UserService {
     public List<User> findAll() {
         return userRepository.findAll();
     }
+    
+    public User findByEmail(String email) {
+    	return userRepository.findByEmail(email).get(0);
+    }
     public List<User> findProviders() { 
         return userRepository.findAll();
     }

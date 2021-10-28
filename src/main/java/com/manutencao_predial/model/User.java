@@ -1,6 +1,7 @@
 package com.manutencao_predial.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -11,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.springframework.hateoas.RepresentationModel;
 
@@ -30,6 +33,8 @@ public class User extends RepresentationModel<User> implements Serializable{
 	private String fone;
 	@Column
 	private String job;
+	@Temporal(TemporalType.DATE)
+	private Date date;
 	
 	@ManyToMany(cascade = CascadeType.REFRESH)
 	@JoinTable(name = "user_immobile",
@@ -92,6 +97,14 @@ public class User extends RepresentationModel<User> implements Serializable{
 	}
 	public void setFone(String fone) {
 		this.fone = fone;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 	@Override
