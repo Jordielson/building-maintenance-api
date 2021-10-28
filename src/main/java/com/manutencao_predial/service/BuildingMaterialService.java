@@ -7,6 +7,9 @@ import com.manutencao_predial.model.BuildingMaterial;
 import com.manutencao_predial.repository.BuildingMaterialRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -46,13 +49,33 @@ public class BuildingMaterialService {
 		return buildingMaterialO;
     }
 
+    /**
+     * Verifica se um material de construcao eh valido para ser salvo no banco. 
+     * Um material eh valido quando a quantidade de item de material nao excede 50 
+     * e nao eh inferior a 0.
+     * @param buildingMaterial material de construcao a ser verificado
+     * @return falso se a quantidade for superior a 50 e 
+     *         verdadeiro se a quantidade estiver entre 0 e 50
+     * @throws RuntimeException se a quantidade for menor que zero
+     */
     public boolean checkBuildingMaterialIsValid(BuildingMaterial buildingMaterial) throws RuntimeException {
         if(buildingMaterial.getAmount() > 50) {
-            throw new RuntimeException("Quantidade de excedeu o limite");
+            return false;
         } else if(buildingMaterial.getAmount() < 0) {
+
             throw new RuntimeException("Quantidade menor que o valor minino");
         }
         return true;
+    }
+    
+    /**
+     * Busca os materiais de construcao com maior quantidade de itens.
+     * @param page a pagina que se deseja consutar
+     * @return uma lista com no maximo 20 materiais e de acordo com a pagina passada por parametro
+     */
+    public List<BuildingMaterial> consultMaterialsWithMoreAmount(int page){
+        Pageable pageable = PageRequest.of(page, 20, Sort.by("amount"));
+        return buildingMaterialRepository.findBuildingMaterialsOrderByAmountDesc(pageable).getContent();
     }
 
     public BuildingMaterial save(BuildingMaterial buildingMaterial) {

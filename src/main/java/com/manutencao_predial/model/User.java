@@ -1,6 +1,8 @@
 package com.manutencao_predial.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -106,6 +108,10 @@ public class User extends RepresentationModel<User> implements Serializable{
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public void setDate(LocalDate date) {
+		this.date = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());;
 	}
 
 	@Override

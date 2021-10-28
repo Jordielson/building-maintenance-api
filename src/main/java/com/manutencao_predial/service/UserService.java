@@ -1,7 +1,5 @@
 package com.manutencao_predial.service;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,7 +35,7 @@ public class UserService {
     	int age = user.ageCalculate();
 			
 		if(age < 18) {
-			throw new RuntimeException();
+			throw new RuntimeException("Usuario deve ter no minimo 18 anos");
 		}
         return userRepository.save(user);
     }
