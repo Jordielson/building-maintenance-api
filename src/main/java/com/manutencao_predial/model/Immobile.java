@@ -1,14 +1,18 @@
 package com.manutencao_predial.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -32,7 +36,13 @@ public class Immobile extends RepresentationModel<Immobile>implements Serializab
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "company")
 	private Company company;
-	
+
+	@Enumerated(EnumType.STRING)
+	private ImmobileSizeEnum immobileSize;
+
+	@ManyToMany
+	private List<User> employees;
+
 	public Immobile() {
 	}
 
@@ -67,6 +77,19 @@ public class Immobile extends RepresentationModel<Immobile>implements Serializab
 	public void setCompany(Company company) {
 		this.company = company;
 	}
+	public ImmobileSizeEnum getImmobileSize() {
+		return immobileSize;
+	}
+	public void setImmobileSize(ImmobileSizeEnum immobileSize) {
+		this.immobileSize = immobileSize;
+	}
+	public List<User> getEmployees() {
+		return employees;
+	}
+	public void setEmployees(List<User> employees) {
+		this.employees = employees;
+	}
+
 	@Override
 	public String toString() {
 		return name;

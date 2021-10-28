@@ -3,6 +3,7 @@ package com.manutencao_predial.model;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -11,13 +12,13 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.hateoas.RepresentationModel;
 
 @Entity
@@ -39,11 +40,9 @@ public class User extends RepresentationModel<User> implements Serializable{
 	@Temporal(TemporalType.DATE)
 	private Date date;
 	
-	@ManyToMany(cascade = CascadeType.REFRESH)
-	@JoinTable(name = "user_immobile",
-				joinColumns = @JoinColumn(name = "user_cpf"),
-				inverseJoinColumns = @JoinColumn(name = "immobile_id"))
-	private List<Immobile> workBuildings;
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@ManyToMany(cascade = CascadeType.REFRESH, mappedBy = "employees")
+	private List<Immobile> workBuildings = new ArrayList<>();
 	
 	public User() {
 	}
@@ -95,6 +94,11 @@ public class User extends RepresentationModel<User> implements Serializable{
 	public void setWorkBuildings(List<Immobile> workBuildings) {
 		this.workBuildings = workBuildings;
 	}
+
+	public void addWorkBuilding(Immobile immobile) {
+		this.workBuildings.add(immobile);
+	}
+
 	public String getFone() {
 		return fone;
 	}

@@ -25,22 +25,29 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> findById(String cnpj) {
-        Optional<User> userO = userRepository.findById(cnpj);
+    public Optional<User> findById(String cpf) {
+        Optional<User> userO = userRepository.findById(cpf);
 		return userO;
     }
 
-    public User save(User user) {
- 
-    	int age = user.ageCalculate();
-			
+    private void checkUserAdult(User user) {
+        int age = user.ageCalculate();
 		if(age < 18) {
 			throw new RuntimeException("Usuario deve ter no minimo 18 anos");
 		}
+    }
+
+    public User save(User user) {
+        Optional<User> userO = findById(user.getCpf());
+        if(userO.isPresent()) {
+            return update(user);
+        }
+        checkUserAdult(user);
         return userRepository.save(user);
     }
 
     public User update(User user) {
+        checkUserAdult(user);
         return userRepository.save(user);
     }
 
