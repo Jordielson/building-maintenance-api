@@ -1,6 +1,7 @@
 package com.manutencao_predial.model;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -130,5 +131,32 @@ public class User extends RepresentationModel<User> implements Serializable{
 			return this.cpf.equals(u.cpf);
 		}
 		return false;
+	}
+
+	public int ageCalculate() {
+		Date date = new Date();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH);
+		int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+
+		Date userDate = getDate();
+		Calendar userCalendar = Calendar.getInstance();
+		userCalendar.setTime(userDate);
+		int userYear = userCalendar.get(Calendar.YEAR);
+		int userMonth = userCalendar.get(Calendar.MONTH);
+		int userDay = userCalendar.get(Calendar.DAY_OF_MONTH);
+		
+		if(userMonth <= month) {
+			if(userMonth == month && userDay>day) {
+				return (year-userYear)-1;
+			}
+			return year-userYear;
+		}else {
+			return (year-userYear)-1;
+		}
+
 	}
 }

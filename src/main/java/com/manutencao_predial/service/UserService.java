@@ -1,5 +1,7 @@
 package com.manutencao_predial.service;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +33,12 @@ public class UserService {
     }
 
     public User save(User user) {
+ 
+    	int age = user.ageCalculate();
+			
+		if(age < 18) {
+			throw new RuntimeException();
+		}
         return userRepository.save(user);
     }
 
