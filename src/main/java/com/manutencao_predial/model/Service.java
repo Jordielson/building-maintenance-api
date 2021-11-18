@@ -19,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.hateoas.RepresentationModel;
@@ -45,7 +46,7 @@ public class Service extends RepresentationModel<Service> implements Serializabl
 	private LocalDate initDate = LocalDate.now();
 	
 	@Column
-	private String term;
+	private LocalDate term = LocalDate.now();
 	
 	@Enumerated(EnumType.STRING)
 	@Column(length = 50, nullable = false)
@@ -59,15 +60,13 @@ public class Service extends RepresentationModel<Service> implements Serializabl
 	@JoinColumn(name = "manager")
 	private User manager;
 
-	@ManyToMany
+	@OneToMany
 	@JoinTable(name = "material_service",
 		joinColumns = @JoinColumn(
-			name = "service",
-			referencedColumnName = "id"
+			name = "service_id"
 		),
 		inverseJoinColumns = @JoinColumn(
-			name = "material",
-			referencedColumnName = "id"
+			name = "id"
 		)
 	)
 	private List<MaterialService> materials;
@@ -77,6 +76,75 @@ public class Service extends RepresentationModel<Service> implements Serializabl
 				joinColumns = @JoinColumn(name = "service"),
 				inverseJoinColumns = @JoinColumn(name = "providers"))
 	private List<User> providers =  new ArrayList<User>();
+
+
+	public Service() {
+	}
+
+	public Service(int id, String title, BigDecimal budget, String description, StateService state, Room room) {
+		this.id = id;
+		this.title = title;
+		this.budget = budget;
+		this.description = description;
+		this.state = state;
+		this.room = room;
+	}
+
+	public Service id(int id) {
+		setId(id);
+		return this;
+	}
+
+	public Service title(String title) {
+		setTitle(title);
+		return this;
+	}
+
+	public Service budget(BigDecimal budget) {
+		setBudget(budget);
+		return this;
+	}
+
+	public Service description(String description) {
+		setDescription(description);
+		return this;
+	}
+
+	public Service initDate(LocalDate initDate) {
+		setInitDate(initDate);
+		return this;
+	}
+
+	public Service term(LocalDate term) {
+		setTerm(term);
+		return this;
+	}
+
+	public Service state(StateService state) {
+		setState(state);
+		return this;
+	}
+
+	public Service room(Room room) {
+		setRoom(room);
+		return this;
+	}
+
+	public Service manager(User manager) {
+		setManager(manager);
+		return this;
+	}
+
+	public Service materials(List<MaterialService> materials) {
+		setMaterials(materials);
+		return this;
+	}
+
+	public Service providers(List<User> providers) {
+		setProviders(providers);
+		return this;
+	}
+
 
 	public void addProvider(User user) {
 		providers.add(user);
@@ -106,11 +174,11 @@ public class Service extends RepresentationModel<Service> implements Serializabl
 		this.description = description;
 	}
 
-	public String getTerm() {
+	public LocalDate getTerm() {
 		return term;
 	}
 
-	public void setTerm(String term) {
+	public void setTerm(LocalDate term) {
 		this.term = term;
 	}
 

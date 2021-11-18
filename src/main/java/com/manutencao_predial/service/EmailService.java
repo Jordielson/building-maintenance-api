@@ -21,7 +21,7 @@ public class EmailService {
 	String password = "";
 	
 	
-	public List<User> birthdayVerification() {
+	public List<User> birthdayVerification(List<User> usersList) {
 		
 		Date date = new Date();
 		Calendar calendar = Calendar.getInstance();
@@ -30,7 +30,7 @@ public class EmailService {
 		int day = calendar.get(Calendar.DAY_OF_MONTH);
 				
 		ArrayList<User> users = new ArrayList<User>();
-		for(User user : userService.findAll()) {
+		for(User user : usersList) {
 			
 			Calendar userCalendar = Calendar.getInstance();
 			userCalendar.setTime(user.getDate());

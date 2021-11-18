@@ -1,6 +1,6 @@
 package com.manutencao_predial.exceptions;
 
-public abstract class NotFoundException extends RuntimeException {
+public class NotFoundException extends RuntimeException {
     /**
 	 * Construtor para especificar a mensagem
 	 * @param msg detalhes da mensagem.

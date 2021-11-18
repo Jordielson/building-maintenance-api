@@ -8,20 +8,19 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.manutencao_predial.model.User;
 
-@TestInstance(Lifecycle.PER_CLASS)
 @SpringBootTest
-public class UserTest {
+public class UserServiceTest {
 	@Mock
 	UserService mock;
 	@Autowired
@@ -29,7 +28,7 @@ public class UserTest {
 
 	private User user;
 
-	@BeforeAll
+	@BeforeEach
 	void initUserTest() {
 		user = new User();
 		user.setCpf("979.797.949-94");
@@ -59,6 +58,7 @@ public class UserTest {
 			today.getDayOfMonth()
 		);
 
+		when(mock.save(user)).thenReturn(user);
 		user.setDate(ld);
 		assertEquals(user, mock.save(user));
 	}
@@ -68,9 +68,13 @@ public class UserTest {
 		LocalDate today = LocalDate.now();
 		
 		user.setDate(LocalDate.of(1990, today.getMonthValue(), today.getDayOfMonth()));
-		user = mock.save(user);
 
-		assertTrue(emailService.birthdayVerification().stream().anyMatch(item -> user.equals(item)));
+		List<User> users = new ArrayList<>();
+		users.add(user);
+		when(mock.findAll()).thenReturn(users);
+
+		assertTrue(emailService.birthdayVerification(mock.findAll()).stream().anyMatch(item -> user.equals(item)));
+		verify(mock).findAll();
 	}
 
 	@Test
@@ -79,14 +83,16 @@ public class UserTest {
 		int year = 1990;
 
 		user.setDate(LocalDate.ofYearDay(year, today.getDayOfYear() - 1));
-		user = mock.save(user);
 
-		assertFalse(emailService.birthdayVerification().stream().anyMatch(item -> user.equals(item)));
+		List<User> users = new ArrayList<>();
+		users.add(user);
+		when(mock.findAll()).thenReturn(users);
+
+		assertFalse(emailService.birthdayVerification(mock.findAll()).stream().anyMatch(item -> user.equals(item)));
 
 		user.setDate(LocalDate.ofYearDay(year, today.getDayOfYear() + 1));
-		user = mock.save(user);
 
-		assertFalse(emailService.birthdayVerification().stream().anyMatch(item -> user.equals(item)));
+		assertFalse(emailService.birthdayVerification(mock.findAll()).stream().anyMatch(item -> user.equals(item)));
 	}
 
 }
