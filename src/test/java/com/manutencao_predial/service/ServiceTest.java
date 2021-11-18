@@ -1,4 +1,4 @@
-package com.manutencao_predial.tests;
+package com.manutencao_predial.service;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -7,7 +7,6 @@ import java.util.stream.Stream;
 
 import com.manutencao_predial.exceptions.NotFoundException;
 import com.manutencao_predial.model.Service;
-import com.manutencao_predial.service.ServiceService;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

@@ -1,4 +1,4 @@
-package com.manutencao_predial.tests;
+package com.manutencao_predial.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.math.BigDecimal;
 
 import com.manutencao_predial.model.BuildingMaterial;
-import com.manutencao_predial.service.BuildingMaterialService;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

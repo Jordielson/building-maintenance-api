@@ -1,4 +1,4 @@
-package com.manutencao_predial.tests;
+package com.manutencao_predial.service;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -9,8 +9,6 @@ import java.util.List;
 import com.manutencao_predial.model.Immobile;
 import com.manutencao_predial.model.ImmobileSizeEnum;
 import com.manutencao_predial.model.User;
-import com.manutencao_predial.service.ImmobileService;
-import com.manutencao_predial.service.UserService;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;

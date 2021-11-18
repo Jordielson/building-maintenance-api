@@ -1,32 +1,36 @@
-package com.manutencao_predial.tests;
+package com.manutencao_predial.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.manutencao_predial.model.User;
-import com.manutencao_predial.service.EmailService;
-import com.manutencao_predial.service.UserService;
 
+@TestInstance(Lifecycle.PER_CLASS)
 @SpringBootTest
 public class UserTest {
-	@Autowired
-	UserService userService;
+	@Mock
+	UserService mock;
 	@Autowired
 	EmailService emailService;
 
-	private static User user;
+	private User user;
 
 	@BeforeAll
-	static void initUserTest() {
+	void initUserTest() {
 		user = new User();
 		user.setCpf("979.797.949-94");
 		user.setName("Joao");
@@ -39,9 +43,11 @@ public class UserTest {
 	public void userUnderAgeTest() {
 		LocalDate today = LocalDate.now();
 		LocalDate ld = LocalDate.ofYearDay(today.getYear() - 18, today.getDayOfYear() + 1);
-
-		user.setDate(ld);
-		assertThrows(RuntimeException.class, () -> userService.save(user));
+        user.setDate(ld);
+		
+		when(mock.save(user)).thenThrow(new RuntimeException("Usuario deve ter no minimo 18 anos"));
+        assertThrows(RuntimeException.class, () -> mock.save(user));
+        verify(mock).save(user);
 	}
 
 	@Test
@@ -54,7 +60,7 @@ public class UserTest {
 		);
 
 		user.setDate(ld);
-		assertEquals(user, userService.save(user));
+		assertEquals(user, mock.save(user));
 	}
 
 	@Test
@@ -62,7 +68,7 @@ public class UserTest {
 		LocalDate today = LocalDate.now();
 		
 		user.setDate(LocalDate.of(1990, today.getMonthValue(), today.getDayOfMonth()));
-		user = userService.save(user);
+		user = mock.save(user);
 
 		assertTrue(emailService.birthdayVerification().stream().anyMatch(item -> user.equals(item)));
 	}
@@ -73,12 +79,12 @@ public class UserTest {
 		int year = 1990;
 
 		user.setDate(LocalDate.ofYearDay(year, today.getDayOfYear() - 1));
-		user = userService.save(user);
+		user = mock.save(user);
 
 		assertFalse(emailService.birthdayVerification().stream().anyMatch(item -> user.equals(item)));
 
 		user.setDate(LocalDate.ofYearDay(year, today.getDayOfYear() + 1));
-		user = userService.save(user);
+		user = mock.save(user);
 
 		assertFalse(emailService.birthdayVerification().stream().anyMatch(item -> user.equals(item)));
 	}
