@@ -58,8 +58,8 @@ public class UserServiceTest {
 			today.getDayOfMonth()
 		);
 
-		when(mock.save(user)).thenReturn(user);
 		user.setDate(ld);
+		when(mock.save(user)).thenReturn(user);
 		assertEquals(user, mock.save(user));
 	}
 

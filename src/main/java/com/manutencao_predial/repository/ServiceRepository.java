@@ -2,11 +2,13 @@ package com.manutencao_predial.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 import com.manutencao_predial.model.Service;
 
+@Repository
 public interface ServiceRepository extends JpaRepository<Service, Integer>{
 
     @Query(value = "SELECT * FROM service s "+
