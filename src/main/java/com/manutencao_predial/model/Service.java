@@ -43,10 +43,10 @@ public class Service extends RepresentationModel<Service> implements Serializabl
 	private String description;
 
 	@Column
-	private LocalDate initDate = LocalDate.now();
+	private LocalDate initDate;
 	
 	@Column
-	private LocalDate term = LocalDate.now();
+	private LocalDate term;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(length = 50, nullable = false)

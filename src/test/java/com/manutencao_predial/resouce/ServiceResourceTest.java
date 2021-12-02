@@ -1,10 +1,13 @@
 package com.manutencao_predial.resouce;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,7 +15,7 @@ import com.manutencao_predial.model.Service;
 import com.manutencao_predial.model.StateService;
 import com.manutencao_predial.service.ServiceService;
 
-import org.apache.tomcat.websocket.server.UriTemplate;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -23,6 +26,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -40,12 +44,10 @@ public class ServiceResourceTest {
     public void  createServiceTest() throws Exception{
         Service service = new Service(1, "Trocar Lampada", new BigDecimal(20), "Trocar Lampada da sala 1", StateService.INICIADO, null);
 
-        service.setInitDate(null);
-        service.setTerm(null);
         String jsonService = objectMapper.writeValueAsString(service);
 
         Mockito.when(serviceService.save(any()))
-            .thenReturn(service.id(1));
+            .thenReturn(service);
 
         mockMvc.perform(
             MockMvcRequestBuilders.post("/ManuPredSoft/service")
@@ -65,6 +67,28 @@ public class ServiceResourceTest {
         assertEquals(service.getDescription(), serviceCaptured.getDescription());
         assertEquals(service.getState(), serviceCaptured.getState());
         assertEquals(service.getRoom(), serviceCaptured.getRoom());
+    }
+
+    @Test
+    public void getServiceByIdTest() throws Exception {
+        Service service = new Service(1, "Trocar Lampada", new BigDecimal(20), "Trocar Lampada da sala 1", StateService.INICIADO, null);
+
+        Optional<Service> serviceOpt = Optional.of(service);
+
+        when(serviceService.findById(eq(1)))
+            .thenReturn(serviceOpt);
+
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/ManuPredSoft/service/" + service.getId())
+            .accept(MediaType.APPLICATION_JSON)
+        )
+
+        .andExpect(status().isOk())
+            .andExpect(jsonPath("$.title").value(service.getTitle()))
+            .andExpect(jsonPath("$.description", Matchers.is(service.getDescription())))
+            .andExpect(jsonPath("$.budget").value(service.getBudget()))
+            .andExpect(jsonPath("$.state", Matchers.is(service.getState().toString())))
+            .andExpect(jsonPath("$.room", Matchers.is(service.getRoom())));
     }
     
 }
