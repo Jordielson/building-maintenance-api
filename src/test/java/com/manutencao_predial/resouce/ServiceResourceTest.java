@@ -90,5 +90,7 @@ public class ServiceResourceTest {
             .andExpect(jsonPath("$.state", Matchers.is(service.getState().toString())))
             .andExpect(jsonPath("$.room", Matchers.is(service.getRoom())));
     }
+
+    
     
 }

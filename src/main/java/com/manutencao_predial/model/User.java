@@ -38,6 +38,65 @@ public class User extends RepresentationModel<User> implements Serializable{
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@ManyToMany(cascade = CascadeType.REFRESH, mappedBy = "employees")
 	private List<Immobile> workBuildings = new ArrayList<>();
+
+	public User(String cpf, String name, String email, String password, String fone, String job, LocalDate date, List<Immobile> workBuildings) {
+		this.cpf = cpf;
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.fone = fone;
+		this.job = job;
+		this.date = date;
+		this.workBuildings = workBuildings;
+	}
+
+	public User(String cpf, String name, String email, String password, String job) {
+		this.cpf = cpf;
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.job = job;
+	}
+
+	public User cpf(String cpf) {
+		setCpf(cpf);
+		return this;
+	}
+
+	public User name(String name) {
+		setName(name);
+		return this;
+	}
+
+	public User email(String email) {
+		setEmail(email);
+		return this;
+	}
+
+	public User password(String password) {
+		setPassword(password);
+		return this;
+	}
+
+	public User fone(String fone) {
+		setFone(fone);
+		return this;
+	}
+
+	public User job(String job) {
+		setJob(job);
+		return this;
+	}
+
+	public User date(LocalDate date) {
+		setDate(date);
+		return this;
+	}
+
+	public User workBuildings(List<Immobile> workBuildings) {
+		setWorkBuildings(workBuildings);
+		return this;
+	}
 	
 	public User() {
 	}
