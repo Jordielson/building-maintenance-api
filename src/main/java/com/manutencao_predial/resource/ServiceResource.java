@@ -53,6 +53,15 @@ public class ServiceResource {
 	@PostMapping("/service")
 	public ResponseEntity<Service> saveService(@RequestBody Service service) {
 		return new ResponseEntity<Service>(serviceService.save(service), HttpStatus.CREATED);
+		// Service serviceCreated = serviceService.save(service);
+
+		// URI location = ServletUriComponentsBuilder
+		// 	.fromCurrentRequest()
+		// 	.path("/{id}")
+		// 	.buildAndExpand(serviceCreated.getId())
+		// 	.toUri();
+
+		// return ResponseEntity.created(location).build();
 	}
 	
 	@DeleteMapping("/service/{id}")

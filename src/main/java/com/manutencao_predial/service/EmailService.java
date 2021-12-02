@@ -1,8 +1,7 @@
 package com.manutencao_predial.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.mail.DefaultAuthenticator;
@@ -22,20 +21,15 @@ public class EmailService {
 	
 	
 	public List<User> birthdayVerification(List<User> usersList) {
-		
-		Date date = new Date();
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
-		int month = calendar.get(Calendar.MONTH);
-		int day = calendar.get(Calendar.DAY_OF_MONTH);
+		LocalDate date = LocalDate.now();
+		int month = date.getMonthValue();
+		int day = date.getDayOfMonth();
 				
 		ArrayList<User> users = new ArrayList<User>();
 		for(User user : usersList) {
 			
-			Calendar userCalendar = Calendar.getInstance();
-			userCalendar.setTime(user.getDate());
-			int userMonth = userCalendar.get(Calendar.MONTH);
-			int userDay = userCalendar.get(Calendar.DAY_OF_MONTH);
+			int userMonth = user.getDate().getMonthValue();
+			int userDay =  user.getDate().getDayOfMonth();
 
 			if(userDay == day && userMonth == month) {
 				users.add(user);
@@ -46,15 +40,11 @@ public class EmailService {
 	
 	public boolean sendEmail(String email) {
 		User user = userService.findByEmail(email);
-		Date userDate = user.getDate();
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(userDate);
-		int userYear = cal.get(Calendar.YEAR);
+		LocalDate userDate = user.getDate();
+		int userYear = userDate.getYear();
 		
-		Date date = new Date();
-		Calendar cal2 = Calendar.getInstance();
-		cal2.setTime(date);
-		int year = cal2.get(Calendar.YEAR);
+		LocalDate today = LocalDate.now();
+		int year = today.getYear();
 		
 		int age = year - userYear;
 		

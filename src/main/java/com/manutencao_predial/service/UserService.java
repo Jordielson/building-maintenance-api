@@ -31,10 +31,10 @@ public class UserService {
     }
 
     private void checkUserAdult(User user) {
-        int age = user.ageCalculate();
-		if(age < 18) {
-			throw new RuntimeException("Usuario deve ter no minimo 18 anos");
-		}
+        // int age = user.ageCalculate();
+		// if(age < 18) {
+		// 	throw new RuntimeException("Usuario deve ter no minimo 18 anos");
+		// }
     }
 
     public User save(User user) {

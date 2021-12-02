@@ -2,10 +2,7 @@ package com.manutencao_predial.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,8 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -37,8 +32,8 @@ public class User extends RepresentationModel<User> implements Serializable{
 	private String fone;
 	@Column
 	private String job;
-	@Temporal(TemporalType.DATE)
-	private Date date;
+	@Column
+	private LocalDate date;
 	
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@ManyToMany(cascade = CascadeType.REFRESH, mappedBy = "employees")
@@ -106,16 +101,12 @@ public class User extends RepresentationModel<User> implements Serializable{
 		this.fone = fone;
 	}
 
-	public Date getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
 	public void setDate(LocalDate date) {
-		this.date = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());;
+		this.date = date;
 	}
 
 	@Override
@@ -144,20 +135,16 @@ public class User extends RepresentationModel<User> implements Serializable{
 	}
 
 	public int ageCalculate() {
-		Date date = new Date();
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
-		int year = calendar.get(Calendar.YEAR);
-		int month = calendar.get(Calendar.MONTH);
-		int day = calendar.get(Calendar.DAY_OF_MONTH);
+		LocalDate localDate = LocalDate.now();
+		int year = localDate.getYear();
+		int month = localDate.getMonthValue();
+		int day = localDate.getDayOfMonth();
 
 
-		Date userDate = getDate();
-		Calendar userCalendar = Calendar.getInstance();
-		userCalendar.setTime(userDate);
-		int userYear = userCalendar.get(Calendar.YEAR);
-		int userMonth = userCalendar.get(Calendar.MONTH);
-		int userDay = userCalendar.get(Calendar.DAY_OF_MONTH);
+		LocalDate userDate = getDate();
+		int userYear = userDate.getYear();
+		int userMonth = userDate.getMonthValue();
+		int userDay = userDate.getDayOfMonth();
 		
 		if(userMonth <= month) {
 			if(userMonth == month && userDay>day) {
