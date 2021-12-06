@@ -55,7 +55,6 @@ public class ServiceResourceTest {
             .content(jsonService)
         )
         .andExpect(status().isCreated());
-        // .andExpect(header().exists("name"));
 
         ArgumentCaptor<Service> captor = ArgumentCaptor.forClass(Service.class);
         verify(serviceService).save(captor.capture());
@@ -82,7 +81,6 @@ public class ServiceResourceTest {
             MockMvcRequestBuilders.get("/ManuPredSoft/service/" + service.getId())
             .accept(MediaType.APPLICATION_JSON)
         )
-
         .andExpect(status().isOk())
             .andExpect(jsonPath("$.title").value(service.getTitle()))
             .andExpect(jsonPath("$.description", Matchers.is(service.getDescription())))
