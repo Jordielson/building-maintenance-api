@@ -1,10 +1,12 @@
 package com.manutencao_predial.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.springframework.hateoas.RepresentationModel;
@@ -19,6 +21,9 @@ public class Supplier extends RepresentationModel<Supplier> implements Serializa
 
     @Column
     private String name;
+
+    @ManyToMany
+	private List<BuildingMaterial> buildingMaterials;
 
 
     public Supplier(){}
