@@ -1,19 +1,13 @@
 package com.manutencao_predial;
 
-import org.openqa.selenium.Keys;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -38,7 +32,20 @@ public class InterfaceTest {
 
     @Test
     public void loginTest() throws InterruptedException {
-        driver.get("http://localhost:19006/");
+		driver.get("http://localhost:19006/");
+
+		WebElement inputEmail = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[1]/div/div[2]/div[1]/input"));
+		inputEmail.sendKeys("jord@gmail.com");
+        waitScreen();
+		WebElement inputPassword = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[1]/div/div[3]/div[1]/input"));
+		inputPassword.sendKeys("123456");
+        waitScreen();
+		
+		WebElement submit = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[1]/div/div[4]/div/div/div/div[2]"));
+		submit.click();
+        waitScreen();
+        waitScreen();
+        waitScreen();
         waitScreen();
         waitScreen();
         waitScreen();

@@ -25,7 +25,6 @@ public class Supplier extends RepresentationModel<Supplier> implements Serializa
     @ManyToMany
 	private List<BuildingMaterial> buildingMaterials;
 
-
     public Supplier(){}
 
     public String getCnpj() {
