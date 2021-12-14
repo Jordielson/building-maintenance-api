@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
@@ -20,64 +20,73 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class InterfaceTest {
 	
-	private WebDriver driver;
-	private WebDriverWait wait;
-	private long TIMEOUT_IN_SECONDS = 2;
+	private static WebDriver driver;
+	private static WebDriverWait wait;
+	private static long TIMEOUT_IN_SECONDS = 2;
 
-	@Before
-	public void configura() {
-		System.setProperty("webdriver.chrome.driver", "/chromedriver"); //CUIDADO COM A VERSÃO DO DRIVE VS VERSÃO DO CHROME: https://sites.google.com/a/chromium.org/chromedriver/downloads
+	@BeforeAll
+	public static void configura() {
+		System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver"); //CUIDADO COM A VERSÃO DO DRIVE VS VERSÃO DO CHROME: https://sites.google.com/a/chromium.org/chromedriver/downloads
 		driver = new ChromeDriver();
 		wait = new WebDriverWait(driver, TIMEOUT_IN_SECONDS);
 	}
 	
-	@After
-	public void finaliza() {
+	@AfterAll
+	public static void finaliza() {
 		driver.quit();
 	}
+
+    @Test
+    public void loginTest() throws InterruptedException {
+        driver.get("http://localhost:19006/");
+        waitScreen();
+        waitScreen();
+        waitScreen();
+        waitScreen();
+    }
 	
-	@Test
-	public void testGoogle() throws InterruptedException {
-		driver.get("https://www.google.com/");
+	// @Test
+	// public void testGoogle() throws InterruptedException {
+	// 	driver.get("https://www.google.com/");
 		
-		WebElement searchArea = driver.findElement(By.cssSelector("input.gLFyf.gsfi"));
-		searchArea.sendKeys("G1");
-		waitScreen();
-		searchArea.sendKeys(Keys.ENTER);
-		waitScreen();
-		
-		
-		WebElement g1Site = driver.findElement(By.xpath("//*[@id=\"rso\"]/div[1]/div/div/div/div/div/div/div[1]/a/h3"));
-		g1Site.click();
-		waitScreen();
-		
-		assertEquals("https://g1.globo.com/", driver.getCurrentUrl());
-		
-		WebElement ge = driver.findElement(By.xpath("//*[@id=\"barra-globocom\"]/div/div/ul/li[2]/a"));
-		ge.click();
-		waitScreen();
-		
-		assertEquals("https://ge.globo.com/", driver.getCurrentUrl());
+	// 	WebElement searchArea = driver.findElement(By.cssSelector("input.gLFyf.gsfi"));
+	// 	searchArea.sendKeys("G1");
+	// 	waitScreen();
+	// 	searchArea.sendKeys(Keys.ENTER);
+	// 	waitScreen();
 		
 		
-		WebElement cano = driver.findElement(By.xpath("//*[@id=\"fc4c6f60-f2d8-4751-9bce-798404e9e79a\"]/div/div[2]/div/a"));
-		assertEquals("Fluminense avança nas negociações com Cano", cano.getText());
-		waitScreen();
-		cano.click();
-		waitScreen();
+	// 	WebElement g1Site = driver.findElement(By.xpath("//*[@id=\"rso\"]/div[1]/div/div/div/div/div/div/div[1]/a/h3"));
+	// 	g1Site.click();
+	// 	waitScreen();
 		
-		WebElement canoNews = driver.findElement(By.className("content-head__title"));
-		assertEquals("Fluminense avança nas negociações com atacante Germán Cano, ex-Vasco", canoNews.getText());
+	// 	assertEquals("https://g1.globo.com/", driver.getCurrentUrl());
 		
+	// 	WebElement ge = driver.findElement(By.xpath("//*[@id=\"barra-globocom\"]/div/div/ul/li[2]/a"));
+	// 	ge.click();
+	// 	waitScreen();
 		
-		waitScreen();
-		driver.navigate().back();
-		waitScreen();
-		driver.navigate().forward();
-		waitScreen();
+	// 	assertEquals("https://ge.globo.com/", driver.getCurrentUrl());
 		
 		
-	}
+	// 	WebElement cano = driver.findElement(By.xpath("//*[@id=\"fc4c6f60-f2d8-4751-9bce-798404e9e79a\"]/div/div[2]/div/a"));
+	// 	assertEquals("Fluminense avança nas negociações com Cano", cano.getText());
+	// 	waitScreen();
+	// 	cano.click();
+	// 	waitScreen();
+		
+	// 	WebElement canoNews = driver.findElement(By.className("content-head__title"));
+	// 	assertEquals("Fluminense avança nas negociações com atacante Germán Cano, ex-Vasco", canoNews.getText());
+		
+		
+	// 	waitScreen();
+	// 	driver.navigate().back();
+	// 	waitScreen();
+	// 	driver.navigate().forward();
+	// 	waitScreen();
+		
+		
+	// }
 	
 //	@Test
 //	public void testGoogle() throws InterruptedException {
