@@ -1,6 +1,7 @@
 package com.manutencao_predial.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -41,7 +42,7 @@ public class Immobile extends RepresentationModel<Immobile>implements Serializab
 	private ImmobileSizeEnum immobileSize;
 
 	@ManyToMany
-	private List<User> employees;
+	private List<User> employees = new ArrayList<>();
 
 	public Immobile() {
 	}
