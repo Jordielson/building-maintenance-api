@@ -1,6 +1,9 @@
 package com.manutencao_predial;
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -20,7 +23,7 @@ public class InterfaceTest {
 
 	@BeforeAll
 	public static void configura() {
-		System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver"); //CUIDADO COM A VERSÃO DO DRIVE VS VERSÃO DO CHROME: https://sites.google.com/a/chromium.org/chromedriver/downloads
+		System.setProperty("webdriver.chrome.driver", "C:\\ws-sts\\building-maintenance-api\\drivers\\chromedriver.exe"); //CUIDADO COM A VERSÃO DO DRIVE VS VERSÃO DO CHROME: https://sites.google.com/a/chromium.org/chromedriver/downloads
 		driver = new ChromeDriver();
 		wait = new WebDriverWait(driver, TIMEOUT_IN_SECONDS);
 	}
@@ -35,7 +38,7 @@ public class InterfaceTest {
 		driver.get("http://localhost:19006/");
 
 		WebElement inputEmail = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[1]/div/div[2]/div[1]/input"));
-		inputEmail.sendKeys("jord@gmail.com");
+		inputEmail.sendKeys("victor@email.com");
         waitScreen();
 		WebElement inputPassword = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[1]/div/div[3]/div[1]/input"));
 		inputPassword.sendKeys("123456");
@@ -44,6 +47,17 @@ public class InterfaceTest {
 		WebElement submit = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[1]/div/div[4]/div/div/div/div[2]"));
 		submit.click();
         waitScreen();
+        
+        //driver.get("http://localhost:19006/");
+        WebElement nameOlp = driver.findElement(By.xpath("//*[@id=\"animatedComponent\"]"));
+        assertNotEquals("Principal ADM", nameOlp.getText());
+        
+        WebElement nameOlp2 = driver.findElement(By.xpath("//*[@id=\"animatedComponent\"]"));
+        assertEquals("Principal Gerente", nameOlp2.getText());
+        
+        WebElement nameOlp3 = driver.findElement(By.xpath("//*[@id=\"animatedComponent\"]"));
+        assertNotEquals("Principal Chefe de Setor", nameOlp3.getText());
+        
         waitScreen();
         waitScreen();
         waitScreen();
@@ -131,7 +145,7 @@ public class InterfaceTest {
 	
 	
 	private void waitScreen() throws InterruptedException {
-		Thread.sleep(2000);
+		Thread.sleep(10000);
 	}
 	
 	
