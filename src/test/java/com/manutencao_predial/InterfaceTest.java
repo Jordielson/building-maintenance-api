@@ -60,7 +60,7 @@ public class InterfaceTest {
 
 	@BeforeAll
 	public static void configura() {
-		System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver"); //CUIDADO COM A VERSÃO DO DRIVE VS VERSÃO DO CHROME: https://sites.google.com/a/chromium.org/chromedriver/downloads
+		System.setProperty("webdriver.chrome.driver", "C:\\ws-sts\\building-maintenance-api\\drivers\\chromedriver.exe"); //CUIDADO COM A VERSÃO DO DRIVE VS VERSÃO DO CHROME: https://sites.google.com/a/chromium.org/chromedriver/downloads
 		driver = new ChromeDriver();
 		wait = new WebDriverWait(driver, TIMEOUT_IN_SECONDS);
 	}
@@ -80,7 +80,7 @@ public class InterfaceTest {
 
     @Test
     public void gerenteTest() throws InterruptedException {
-		inputEmail.sendKeys("joao@gmail.com");
+		inputEmail.sendKeys("victor@gmail.com");
         waitScreen();
 		inputPassword.sendKeys("123456");
         waitScreen();
@@ -238,111 +238,132 @@ public class InterfaceTest {
         WebElement cadastrarEmpresa2 = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div[2]/div[2]/div[2]/div/div/div/div[1]/div/div/div/div[4]/div/div/div"));        
         cadastrarEmpresa2.click();
         waitScreen();
+        
+        Alert alert = driver.switchTo().alert();
+		assertEquals(alert.getText(), "Cadastro realizado com sucesso");
+		alert.accept();
+		waitScreen();
 
         Optional<Company> company = companyRepository.findById("8282828");
         
         assertTrue(company!=null);
         
+		waitScreen();
+        
 /*Teste de cadastro de usuário*/
         
-        WebElement cadastrarUsuario = driver.findElement(By.xpath(""));
+        WebElement cadastrarUsuario = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[1]/div[1]/div/div/div/div/div/div[3]/div/div"));
         cadastrarUsuario.click();
         waitScreen();
         
-        WebElement email = driver.findElement(By.xpath(""));        
-        email.sendKeys("email@email.com");
+        WebElement email = driver.findElement(By.xpath("//*[@id=\"animatedComponent\"]/input"));        
+        email.sendKeys("assis@email.com");
         waitScreen();
 
-        WebElement nome = driver.findElement(By.xpath(""));        
-        nome.sendKeys("teste");
+        WebElement nome = driver.findElement(By.xpath("/html/body/div[1]/div/div/div/div/div/div[2]/div[2]/div[2]/div/div/div/div[1]/div/div/div/div[3]/div[1]/input"));        
+        nome.sendKeys("TESTE");
         waitScreen();
 
-        WebElement cpf = driver.findElement(By.xpath(""));        
+        WebElement cpf = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div[2]/div[2]/div[2]/div/div/div/div[1]/div/div/div/div[4]/input"));        
         cpf.sendKeys("12190052472");
         waitScreen();
         
-        WebElement cargo = driver.findElement(By.xpath(""));        
-        cargo.findElement(By.xpath("")).click();
+        WebElement telefone = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div[2]/div[2]/div[2]/div/div/div/div[1]/div/div/div/div[6]/input"));        
+        telefone.sendKeys("999999999");
         waitScreen();
         
-        WebElement cargoOpcao = driver.findElement(By.xpath(""));        
-        cargoOpcao.findElement(By.xpath("")).click();
+        WebElement cargo = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div[2]/div[2]/div[2]/div/div/div/div[1]/div/div/div/div[8]/select"));        
+        cargo.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div[2]/div[2]/div[2]/div/div/div/div[1]/div/div/div/div[8]/select/option[2]")).click();
         waitScreen();
         
-        WebElement senha = driver.findElement(By.xpath(""));        
+        WebElement senha = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div[2]/div[2]/div[2]/div/div/div/div[1]/div/div/div/div[9]/div[1]/input"));        
         senha.sendKeys("123456");
         waitScreen();
         
-        WebElement btnCadastrar = driver.findElement(By.xpath(""));        
+        WebElement btnCadastrar = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div[2]/div[2]/div[2]/div/div/div/div[1]/div/div/div/div[10]/div/div"));        
         btnCadastrar.click();
         waitScreen();
         
-        List<User> user = userRepository.findByEmail("email@email.com");
+        Alert alert1 = driver.switchTo().alert();
+		assertEquals(alert1.getText(), "Cadastro realizado com sucesso");
+		alert1.accept();
+		waitScreen();
+		
+        List<User> user = userRepository.findByEmail("assis@email.com");
         
         assertTrue(user != null);
         
+        waitScreen();
+        
 /*Teste de cadastro de imovel*/
         
-        WebElement cadastrarImovel= driver.findElement(By.xpath(""));
+        WebElement cadastrarImovel= driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[1]/div[1]/div/div/div/div/div/div[4]/div/div"));
         cadastrarImovel.click();
         waitScreen();
         
-        WebElement nomeImovel = driver.findElement(By.xpath(""));
+        WebElement nomeImovel = driver.findElement(By.xpath("//*[@id=\"animatedComponent\"]/input"));
         nomeImovel.sendKeys("imovel1");
         waitScreen();
         
-        WebElement Endereco = driver.findElement(By.xpath(""));        
+        WebElement Endereco = driver.findElement(By.xpath("/html/body/div[1]/div/div/div/div/div/div[2]/div[2]/div[2]/div/div/div/div[1]/div/div/div/div[3]/div[1]/input"));        
         Endereco.sendKeys("rua fulano de tal");
         waitScreen();
 
-        WebElement porte = driver.findElement(By.xpath(""));        
+        WebElement porte = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div[2]/div[2]/div[2]/div/div/div/div[1]/div/div/div/div[4]/select/option[2]"));        
         porte.click();
         waitScreen();
         
-        WebElement porteOpcao = driver.findElement(By.xpath(""));        
-        porteOpcao.findElement(By.xpath("")).click();
-        waitScreen();
-        
-        WebElement btnContinuar = driver.findElement(By.xpath(""));        
+        WebElement btnContinuar = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div[2]/div[2]/div[2]/div/div/div/div[1]/div/div/div/div[5]/div/div"));        
         btnContinuar.click();
         waitScreen();
+        
+        Alert alert2 = driver.switchTo().alert();
+		//assertEquals(alert2.getText(), "Imóvel cadastrado! Agora é a vez da sala(s).");
+		alert2.accept();
+		waitScreen();
 
-        WebElement numeroAndar = driver.findElement(By.xpath(""));        
+        WebElement numeroAndar = driver.findElement(By.xpath("//*[@id=\"animatedComponent\"]/input"));        
         numeroAndar.sendKeys("1");
         waitScreen();
         
-        WebElement descricao = driver.findElement(By.xpath(""));        
+        WebElement descricao = driver.findElement(By.xpath("/html/body/div[1]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[1]/div/div/div/div[5]/div[1]/input"));        
         descricao.sendKeys("andar teste");
         waitScreen();
         
-        WebElement btnCadastrar1 = driver.findElement(By.xpath(""));        
+        WebElement btnCadastrar1 = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[1]/div/div/div/div[6]/div/div"));        
         btnCadastrar1.click();
         waitScreen();
+        
+        Alert alert3 = driver.switchTo().alert();
+		alert3.accept();
+		waitScreen();
         
         /* Está faltando uma logica para saber se o imovel foi adicionado no banco de dados (FindBy... e assertEquals) */
        
         
 /*Teste de cadastro de fornecedor*/
         
-        WebElement cadastrarFornecedor = driver.findElement(By.xpath(""));
+        WebElement cadastrarFornecedor = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[1]/div[1]/div/div/div/div/div/div[5]/div/div"));
         cadastrarFornecedor.click();
         waitScreen();
         
-        WebElement nomeFornecedor = driver.findElement(By.xpath(""));
+        WebElement nomeFornecedor = driver.findElement(By.xpath("//*[@id=\"animatedComponent\"]/input"));
         nomeFornecedor.sendKeys("fornecedor1");
         waitScreen();
         
-        WebElement cnpj = driver.findElement(By.xpath(""));        
+        WebElement cnpj = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div[2]/div[2]/div[2]/div/div/div/div[1]/div/div/div/div[3]/input"));        
         cnpj.sendKeys("12345678912");
         waitScreen();
 
-        WebElement btnCadastrarFornecedor = driver.findElement(By.xpath(""));        
+        WebElement btnCadastrarFornecedor = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div[2]/div[2]/div[2]/div/div/div/div[1]/div/div/div/div[5]/div/div"));        
         btnCadastrarFornecedor.click();
         waitScreen();
         
-        Optional<Supplier> supplier = supplierRepository.findById("12345678912");
+        //Optional<Supplier> supplier = supplierRepository.findById("12345678912");
         
-        assertTrue(user != null);
+       // assertTrue(supplier != null);
+        
+        waitScreen();
         
     }
     
@@ -474,7 +495,7 @@ public class InterfaceTest {
 	
 	
 	private void waitScreen() throws InterruptedException {
-		Thread.sleep(2000);
+		Thread.sleep(5000);
 	}
 	
 	
