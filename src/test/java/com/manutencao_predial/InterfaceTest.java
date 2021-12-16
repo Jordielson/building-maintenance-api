@@ -265,6 +265,10 @@ public class InterfaceTest {
         cargo.findElement(By.xpath("")).click();
         waitScreen();
         
+        WebElement cargoOpcao = driver.findElement(By.xpath(""));        
+        cargoOpcao.findElement(By.xpath("")).click();
+        waitScreen();
+        
         WebElement senha = driver.findElement(By.xpath(""));        
         senha.sendKeys("123456");
         waitScreen();
@@ -293,6 +297,10 @@ public class InterfaceTest {
 
         WebElement porte = driver.findElement(By.xpath(""));        
         porte.click();
+        waitScreen();
+        
+        WebElement porteOpcao = driver.findElement(By.xpath(""));        
+        porteOpcao.findElement(By.xpath("")).click();
         waitScreen();
         
         WebElement btnContinuar = driver.findElement(By.xpath(""));        
