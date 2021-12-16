@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.AfterAll;
@@ -19,7 +20,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.manutencao_predial.model.Company;
+import com.manutencao_predial.model.Supplier;
+import com.manutencao_predial.model.User;
 import com.manutencao_predial.repository.CompanyRepository;
+import com.manutencao_predial.repository.ImmobileRepository;
+import com.manutencao_predial.repository.SupplierRepository;
+import com.manutencao_predial.repository.UserRepository;
 
 @SpringBootTest
 public class InterfaceTest {
@@ -34,6 +40,16 @@ public class InterfaceTest {
 	
 	@Autowired
 	CompanyRepository companyRepository;
+	
+	@Autowired
+	UserRepository userRepository;
+	
+	@Autowired
+	ImmobileRepository immobileRepository;
+	
+	@Autowired
+	SupplierRepository supplierRepository;
+	
 
 	@BeforeAll
 	public static void configura() {
@@ -101,24 +117,22 @@ public class InterfaceTest {
         assertNotEquals("Principal Chefe de Setor", titulo.getText());
         
         assertNotEquals("Principal Prestador", titulo.getText());
+
+/*Teste de cadastro de empresa*/
         
-        WebElement cadastrarEmpresa = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div[1]/div[2]/div[2]/div/div/div/div[1]/div[1]/div/div/div/div/div/div[2]/div/div/div[2]"));
-        
+        WebElement cadastrarEmpresa = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div[1]/div[2]/div[2]/div/div/div/div[1]/div[1]/div/div/div/div/div/div[2]/div/div/div[2]"));     
         cadastrarEmpresa.click();
         waitScreen();
 
-        WebElement inputNomeEmpresa = driver.findElement(By.xpath("//*[@id=\"animatedComponent\"]/input"));
-        
+        WebElement inputNomeEmpresa = driver.findElement(By.xpath("//*[@id=\"animatedComponent\"]/input"));        
         inputNomeEmpresa.sendKeys("Empresa Teste");
         waitScreen();
 
-        WebElement cnpjEmpresa = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div[2]/div[2]/div[2]/div/div/div/div[1]/div/div/div/div[3]/input"));
-        
+        WebElement cnpjEmpresa = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div[2]/div[2]/div[2]/div/div/div/div[1]/div/div/div/div[3]/input"));        
         cnpjEmpresa.sendKeys("8282828");
         waitScreen();
 
-        WebElement cadastrarEmpresa2 = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div[2]/div[2]/div[2]/div/div/div/div[1]/div/div/div/div[4]/div/div/div"));
-        
+        WebElement cadastrarEmpresa2 = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div[2]/div[2]/div[2]/div/div/div/div[1]/div/div/div/div[4]/div/div/div"));        
         cadastrarEmpresa2.click();
         waitScreen();
 
@@ -126,7 +140,99 @@ public class InterfaceTest {
         
         assertTrue(company!=null);
         
+/*Teste de cadastro de usuário*/
+        
+        WebElement cadastrarUsuario = driver.findElement(By.xpath(""));
+        cadastrarUsuario.click();
         waitScreen();
+        
+        WebElement email = driver.findElement(By.xpath(""));        
+        email.sendKeys("email@email.com");
+        waitScreen();
+
+        WebElement nome = driver.findElement(By.xpath(""));        
+        nome.sendKeys("teste");
+        waitScreen();
+
+        WebElement cpf = driver.findElement(By.xpath(""));        
+        cpf.sendKeys("12190052472");
+        waitScreen();
+        
+        WebElement cargo = driver.findElement(By.xpath(""));        
+        cargo.findElement(By.xpath("")).click();
+        waitScreen();
+        
+        WebElement senha = driver.findElement(By.xpath(""));        
+        senha.sendKeys("123456");
+        waitScreen();
+        
+        WebElement btnCadastrar = driver.findElement(By.xpath(""));        
+        btnCadastrar.click();
+        waitScreen();
+        
+        List<User> user = userRepository.findByEmail("email@email.com");
+        
+        assertTrue(user != null);
+        
+/*Teste de cadastro de imovel*/
+        
+        WebElement cadastrarImovel= driver.findElement(By.xpath(""));
+        cadastrarImovel.click();
+        waitScreen();
+        
+        WebElement nomeImovel = driver.findElement(By.xpath(""));
+        nomeImovel.sendKeys("imovel1");
+        waitScreen();
+        
+        WebElement Endereco = driver.findElement(By.xpath(""));        
+        Endereco.sendKeys("rua fulano de tal");
+        waitScreen();
+
+        WebElement porte = driver.findElement(By.xpath(""));        
+        porte.click();
+        waitScreen();
+        
+        WebElement btnContinuar = driver.findElement(By.xpath(""));        
+        btnContinuar.click();
+        waitScreen();
+
+        WebElement numeroAndar = driver.findElement(By.xpath(""));        
+        numeroAndar.sendKeys("1");
+        waitScreen();
+        
+        WebElement descricao = driver.findElement(By.xpath(""));        
+        descricao.sendKeys("andar teste");
+        waitScreen();
+        
+        WebElement btnCadastrar1 = driver.findElement(By.xpath(""));        
+        btnCadastrar1.click();
+        waitScreen();
+        
+        /* Está faltando uma logica para saber se o imovel foi adicionado no banco de dados (FindBy... e assertEquals) */
+       
+        
+/*Teste de cadastro de fornecedor*/
+        
+        WebElement cadastrarFornecedor = driver.findElement(By.xpath(""));
+        cadastrarFornecedor.click();
+        waitScreen();
+        
+        WebElement nomeFornecedor = driver.findElement(By.xpath(""));
+        nomeFornecedor.sendKeys("fornecedor1");
+        waitScreen();
+        
+        WebElement cnpj = driver.findElement(By.xpath(""));        
+        cnpj.sendKeys("12345678912");
+        waitScreen();
+
+        WebElement btnCadastrarFornecedor = driver.findElement(By.xpath(""));        
+        btnCadastrarFornecedor.click();
+        waitScreen();
+        
+        Optional<Supplier> supplier = supplierRepository.findById("12345678912");
+        
+        assertTrue(user != null);
+        
     }
     
     @Test
