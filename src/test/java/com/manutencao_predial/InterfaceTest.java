@@ -349,16 +349,20 @@ public class InterfaceTest {
 		submit.click();
         waitScreen();
         
-        WebElement titulo = driver.findElement(By.xpath("//*[@id=\"animatedComponent\"]"));
-        
-        assertEquals("Principal Chefe de Setor", titulo.getText());
+        WebElement titulo = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[2]/div/div[2]/div[2]/div/h1"));
+	    assertEquals("Principal Chefe de Setor", titulo.getText());
 
-        assertNotEquals("Principal ADM", titulo.getText());
-        
-        assertNotEquals("Principal Gerente", titulo.getText());
-                
-        assertNotEquals("Principal Prestador", titulo.getText());
-        
+        WebElement notificacao = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[1]/div/div[1]/div/div/div/div/div/div/div[1]/div/div[1]"));
+		notificacao.click();
+		waitScreen();
+
+        WebElement inputTit = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div[2]/div[2]/div[2]/div/div/div/div[1]/div/div/div/div[5]/div[1]/input"));
+		inputTit.sendKeys("Titulo do servico");
+
+        WebElement inputDesc = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div[2]/div[2]/div[2]/div/div/div/div[1]/div/div/div/div[6]/div[1]/input"));
+		inputDesc.sendKeys("Descricao do servico");
+
+        WebElement webElement = driver.findElement(By.xpath(""));
         waitScreen();
 	}
 
