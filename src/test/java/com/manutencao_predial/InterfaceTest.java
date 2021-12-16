@@ -1,18 +1,25 @@
 package com.manutencao_predial;
 
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Optional;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import com.manutencao_predial.model.Company;
+import com.manutencao_predial.repository.CompanyRepository;
 
 @SpringBootTest
 public class InterfaceTest {
@@ -20,6 +27,13 @@ public class InterfaceTest {
 	private static WebDriver driver;
 	private static WebDriverWait wait;
 	private static long TIMEOUT_IN_SECONDS = 2;
+	
+	private WebElement inputEmail;
+	private WebElement inputPassword;
+	private WebElement submit;
+	
+	@Autowired
+	CompanyRepository companyRepository;
 
 	@BeforeAll
 	public static void configura() {
@@ -28,43 +42,141 @@ public class InterfaceTest {
 		wait = new WebDriverWait(driver, TIMEOUT_IN_SECONDS);
 	}
 	
+	@BeforeEach
+	public void login() {
+		driver.get("http://localhost:19006/");
+		inputEmail = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[1]/div/div[2]/div[1]/input"));
+		inputPassword = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[1]/div/div[3]/div[1]/input"));
+		submit = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[1]/div/div[4]/div/div/div/div[2]"));
+	}
+	
 	@AfterAll
 	public static void finaliza() {
 		driver.quit();
 	}
 
     @Test
-    public void loginTest() throws InterruptedException {
-		driver.get("http://localhost:19006/");
+    public void gerenteTest() throws InterruptedException {
 
-		WebElement inputEmail = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[1]/div/div[2]/div[1]/input"));
 		inputEmail.sendKeys("victor@email.com");
         waitScreen();
-		WebElement inputPassword = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[1]/div/div[3]/div[1]/input"));
 		inputPassword.sendKeys("123456");
         waitScreen();
 		
-		WebElement submit = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div/div[1]/div/div[4]/div/div/div/div[2]"));
 		submit.click();
         waitScreen();
         
-        //driver.get("http://localhost:19006/");
-        WebElement nameOlp = driver.findElement(By.xpath("//*[@id=\"animatedComponent\"]"));
-        assertNotEquals("Principal ADM", nameOlp.getText());
+        WebElement titulo = driver.findElement(By.xpath("//*[@id=\"animatedComponent\"]"));
         
-        WebElement nameOlp2 = driver.findElement(By.xpath("//*[@id=\"animatedComponent\"]"));
-        assertEquals("Principal Gerente", nameOlp2.getText());
+        assertEquals("Principal Gerente", titulo.getText());
+
+        assertNotEquals("Principal ADM", titulo.getText());
+                
+        assertNotEquals("Principal Chefe de Setor", titulo.getText());
         
-        WebElement nameOlp3 = driver.findElement(By.xpath("//*[@id=\"animatedComponent\"]"));
-        assertNotEquals("Principal Chefe de Setor", nameOlp3.getText());
+        assertNotEquals("Principal Prestador", titulo.getText());
         
         waitScreen();
+       
+    }
+    
+    @Test
+    public void ADMTest() throws InterruptedException  {
+
+		inputEmail.sendKeys("agemiro@email.com");
         waitScreen();
+
+		inputPassword.sendKeys("123456");
         waitScreen();
+
+		submit.click();
         waitScreen();
+        
+        WebElement titulo = driver.findElement(By.xpath("//*[@id=\"animatedComponent\"]"));
+        
+        assertEquals("Principal ADM", titulo.getText());
+        
+        assertNotEquals("Principal Gerente", titulo.getText());
+        
+        assertNotEquals("Principal Chefe de Setor", titulo.getText());
+        
+        assertNotEquals("Principal Prestador", titulo.getText());
+        
+        WebElement cadastrarEmpresa = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div[1]/div[2]/div[2]/div/div/div/div[1]/div[1]/div/div/div/div/div/div[2]/div/div/div[2]"));
+        
+        cadastrarEmpresa.click();
         waitScreen();
+
+        WebElement inputNomeEmpresa = driver.findElement(By.xpath("//*[@id=\"animatedComponent\"]/input"));
+        
+        inputNomeEmpresa.sendKeys("Empresa Teste");
+        waitScreen();
+
+        WebElement cnpjEmpresa = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div[2]/div[2]/div[2]/div/div/div/div[1]/div/div/div/div[3]/input"));
+        
+        cnpjEmpresa.sendKeys("8282828");
+        waitScreen();
+
+        WebElement cadastrarEmpresa2 = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/div/div[2]/div[2]/div[2]/div/div/div/div[1]/div/div/div/div[4]/div/div/div"));
+        
+        cadastrarEmpresa2.click();
+        waitScreen();
+
+        Optional<Company> company = companyRepository.findById("8282828");
+        
+        assertTrue(company!=null);
+        
         waitScreen();
     }
+    
+    @Test
+	public void chefeSetorTest() throws InterruptedException  {
+
+		inputEmail.sendKeys("jord@email.com");
+        waitScreen();
+		inputPassword.sendKeys("123456");
+        waitScreen();
+		
+		submit.click();
+        waitScreen();
+        
+        WebElement titulo = driver.findElement(By.xpath("//*[@id=\"animatedComponent\"]"));
+        
+        assertEquals("Principal Chefe de Setor", titulo.getText());
+
+        assertNotEquals("Principal ADM", titulo.getText());
+        
+        assertNotEquals("Principal Gerente", titulo.getText());
+                
+        assertNotEquals("Principal Prestador", titulo.getText());
+        
+        waitScreen();
+	}
+
+    @Test
+	public void prestadorTest() throws InterruptedException  {
+
+		inputEmail.sendKeys("pedro@email.com");
+        waitScreen();
+		inputPassword.sendKeys("123456");
+        waitScreen();
+		
+		submit.click();
+        waitScreen();
+        
+        WebElement titulo = driver.findElement(By.xpath("//*[@id=\"animatedComponent\"]"));
+        
+        assertEquals("Principal Prestador", titulo.getText());
+
+        assertNotEquals("Principal ADM", titulo.getText());
+        
+        assertNotEquals("Principal Gerente", titulo.getText());
+        
+        assertNotEquals("Principal Chefe de Setor", titulo.getText());
+                
+        waitScreen();
+        
+	}
 	
 	// @Test
 	// public void testGoogle() throws InterruptedException {
@@ -145,7 +257,7 @@ public class InterfaceTest {
 	
 	
 	private void waitScreen() throws InterruptedException {
-		Thread.sleep(10000);
+		Thread.sleep(5000);
 	}
 	
 	

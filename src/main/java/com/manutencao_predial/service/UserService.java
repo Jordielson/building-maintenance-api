@@ -22,7 +22,7 @@ public class UserService {
     	return userRepository.findByEmail(email).get(0);
     }
     public List<User> findProviders() { 
-        return userRepository.findAll();
+        return userRepository.findProviders();
     }
 
     public Optional<User> findById(String cpf) {
